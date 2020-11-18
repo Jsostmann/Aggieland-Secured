@@ -1,0 +1,5 @@
+out
+.idea/**/*.*
+AggieLand-Secured.iml
+AggieLand-Secured/.idea/workspace.xml
+target
