@@ -6,13 +6,13 @@ import javax.servlet.http.*;
 
 
 
-public class Login extends HttpServlet {
+public class Signin extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html");
 
-        RequestDispatcher rs = request.getRequestDispatcher("html/index.html");
+        RequestDispatcher rs = request.getRequestDispatcher("html/Signin.html");
         rs.include(request, response);
 
     }
