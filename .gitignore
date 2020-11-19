@@ -1,4 +1,5 @@
 out
+.idea
 .idea/**/*.*
 AggieLandSecured.iml
 AggieLand-Secured/.idea/workspace.xml
