@@ -17,7 +17,7 @@ public class DatabaseDAO {
     private static Connection databaseConnection = null;
     private static Statement statement = null;
     private static ResultSet queryResult = null;
-
+    private static String query = null;
     //String query ="select * from USER";
 
     public DatabaseDAO() {
@@ -28,13 +28,13 @@ public class DatabaseDAO {
             databaseConnection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
             statement = databaseConnection.createStatement();
 
-            result = statement.executeQuery(query);
+            queryResult = statement.executeQuery(query);
 
-            while(result.next()) {
+            while(queryResult.next()) {
 
                 for (int i = 0; i < 6; i++) {
 
-                    System.out.print(result.getString(i + 1) + " | ");
+                    System.out.print(queryResult.getString(i + 1) + " | ");
 
                 }
                 System.out.println();

@@ -1,22 +1,24 @@
 package com.aggieland.auth;
 
-import com.aggieland.websocket.ChatroomSocket;
-import org.mindrot.jbcrypt.BCrypt;
-import java.security.SecureRandom;
+
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 public class AuthorizationDAO {
 
     private static final Logger LOG = Logger.getLogger(AuthorizationDAO.class.getName());
-    private static final int SALT_ROUNDS = new SecureRandom().nextInt(30);
 
 
-    public static String encrypt(String plainText) {
-        return BCrypt.hashpw(plainText, BCrypt.gensalt(SALT_ROUNDS));
+
+    public static String hashEncrypt(String plainText) {
+        return Hashing.sha512().hashString(plainText, StandardCharsets.UTF_8).toString();
     }
 
-    public static boolean verify(String plainText, String cipherText) {
-        return BCrypt.checkpw(plainText, cipherText);
+    public static boolean checkHashEncrypt(String plainText, String cipherText) {
+        String userInput = Hashing.sha512().hashString(plainText, StandardCharsets.UTF_8).toString();
+        return userInput.equals(cipherText);
     }
 
 
