@@ -12,15 +12,11 @@ import javax.servlet.http.*;
 public class Signin extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userName = request.getParameter("username");
-        String passWord = request.getParameter("password");
+
 
         response.setContentType("text/html");
-
-        response.getWriter().append(userName).append(" | ").append(passWord);
-
-        //RequestDispatcher rs = request.getRequestDispatcher("html/Signin.html");
-        //rs.include(request, response);
+        RequestDispatcher rs = request.getRequestDispatcher("html/Accessdenied.html");
+        rs.include(request, response);
 
     }
 }
