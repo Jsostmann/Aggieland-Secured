@@ -16,7 +16,8 @@ $(document).ready(function(){
 
 function initWebsocket() {
 
-    websocket = new WebSocket("ws://localhost:8080/aggielandsecured/");
+    var hostLocation = document.location.host;
+    websocket = new WebSocket("ws://" + hostLocation + "/aggielandsecured/");
 
 
     websocket.onmessage = function(event) {

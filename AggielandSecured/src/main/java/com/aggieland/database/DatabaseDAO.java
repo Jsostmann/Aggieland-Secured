@@ -18,15 +18,14 @@ public class DatabaseDAO {
     private static Statement statement = null;
     private static ResultSet queryResult = null;
     private static String query = null;
-    //String query ="select * from USER";
 
     public DatabaseDAO() {
 
         try{
 
-            Class.forName("com.mysql.jdbc.Driver");
-            databaseConnection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
-            statement = databaseConnection.createStatement();
+            //Class.forName("com.mysql.jdbc.Driver");
+            //databaseConnection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            //statement = databaseConnection.createStatement();
 
             queryResult = statement.executeQuery(query);
 
@@ -50,9 +49,10 @@ public class DatabaseDAO {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             databaseConnection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            statement = databaseConnection.createStatement();
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-
         }
     }
 
