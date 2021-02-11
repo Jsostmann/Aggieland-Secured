@@ -5,6 +5,11 @@
          version="4.0">
 
     <servlet>
+        <servlet-name>Home</servlet-name>
+        <servlet-class>com.aggieland.rest.Home</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>Signin</servlet-name>
         <servlet-class>com.aggieland.rest.Signin</servlet-class>
     </servlet>
@@ -18,6 +23,11 @@
         <servlet-name>Chatroom</servlet-name>
         <servlet-class>com.aggieland.rest.Chatroom</servlet-class>
     </servlet>
+
+        <servlet-mapping>
+            <servlet-name>Home</servlet-name>
+            <url-pattern> </url-pattern>
+        </servlet-mapping>
 
         <servlet-mapping>
             <servlet-name>Signin</servlet-name>
