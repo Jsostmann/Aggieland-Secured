@@ -11,13 +11,17 @@ public class DatabaseDAO {
 
     private static final Logger LOG = Logger.getLogger(DatabaseDAO.class.getName());
     private ArrayList<User> connectedUsers;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/aggieland";
+    private static final String DB_URL = "jdbc:mysql://localhost:8002/aggielandsql";
     private static final String DB_USERNAME ="root";
     private static final String DB_PASSWORD = "root";
     private static Connection databaseConnection = null;
     private static Statement statement = null;
     private static ResultSet queryResult = null;
     private static String query = null;
+
+    public static final String GET_USER_QUERY = "SELECT * FROM USER WHERE user_name = ? and pass_word = ?";
+    public static final String ADD_USER_QUERY = "INSERT INTO USER (first_name, last_name, email, user_name, pass_word, online_status) values(?, ?, ?, ?, ?, ?)";
+    public static final String FIND_USER_QUERY = "SELECT * FROM USER WHERE user_name = ?";
 
     public DatabaseDAO() {
 
@@ -58,6 +62,18 @@ public class DatabaseDAO {
 
     private static synchronized void disconnect() {
 
+    }
+
+    public static String getDbUrl() {
+        return DB_URL;
+    }
+
+    public static String getDbUsername() {
+        return DB_USERNAME;
+    }
+
+    public static String getDbPassword() {
+        return DB_PASSWORD;
     }
 
 
