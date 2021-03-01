@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
-public class AuthorizationDAOTest {
+public class AuthoizationUtilTest {
 
     String[] testCases = {"Apple","apple","aPPle","  apple","apple  ",""};
 
@@ -22,14 +22,14 @@ public class AuthorizationDAOTest {
     @Test
     public void testHash() {
         for(int i = 0; i < testCases.length; i++) {
-           assertEquals("Error at testHast() test case: " + i, expectedResults[i], AuthorizationDAO.hashEncrypt(testCases[i]));
+           assertEquals("Error at testHast() test case: " + i, expectedResults[i], AuthoizationUtil.hashEncrypt(testCases[i]));
         }
     }
 
     @Test
     public void testVerifyHash() {
         for(int i = 0; i < testCases.length; i++) {
-            assertTrue("Error at testVerifyHash() test case: " + i, AuthorizationDAO.checkHashEncrypt(testCases[i],expectedResults[i]));
+            assertTrue("Error at testVerifyHash() test case: " + i, AuthoizationUtil.checkHashEncrypt(testCases[i],expectedResults[i]));
         }
     }
 }

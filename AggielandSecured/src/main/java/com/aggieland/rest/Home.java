@@ -1,7 +1,5 @@
 package com.aggieland.rest;
 
-import com.aggieland.auth.AuthorizationDAO;
-
 import java.io.*;
 
 import javax.servlet.*;

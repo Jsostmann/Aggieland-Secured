@@ -19,9 +19,9 @@ public class DatabaseDAO {
     private static ResultSet queryResult = null;
     private static String query = null;
 
-    public static final String GET_USER_QUERY = "SELECT * FROM USER WHERE user_name = ? and pass_word = ?";
-    public static final String ADD_USER_QUERY = "INSERT INTO USER (first_name, last_name, email, user_name, pass_word, online_status) values(?, ?, ?, ?, ?, ?)";
-    public static final String FIND_USER_QUERY = "SELECT * FROM USER WHERE user_name = ?";
+    public static final String GET_USER_QUERY = "SELECT * FROM user WHERE user_name = ? and pass_word = ?";
+    public static final String ADD_USER_QUERY = "INSERT INTO user (first_name, last_name, user_name, password, password_salt, email, date_added, profile_picture, user_info) values(?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?)";
+    public static final String FIND_USER_QUERY = "SELECT * FROM user WHERE user_name = ?";
 
     public DatabaseDAO() {
 

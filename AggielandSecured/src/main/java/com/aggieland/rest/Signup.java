@@ -39,9 +39,10 @@ public class Signup extends HttpServlet {
 
         try {
 
-            boolean sucess = signUpNewUser(request);
+            boolean success = signUpNewUser(request);
 
-            if (sucess) {
+            if (success) {
+                LOG.info("user sucessfully signed up");
                 RequestDispatcher rs = request.getRequestDispatcher("html/Profile.jsp");
                 rs.include(request, response);
 
@@ -56,11 +57,9 @@ public class Signup extends HttpServlet {
         }
     }
 
-    private boolean signUpNewUser(HttpServletRequest request) throws SQLException {
+    private boolean signUpNewUser(HttpServletRequest request) throws SQLException, IOException {
 
         String password = request.getParameter("password");
-
-
 
         User addedUser = User.createUser(request);
 

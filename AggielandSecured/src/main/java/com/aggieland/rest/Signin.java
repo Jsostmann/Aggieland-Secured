@@ -35,11 +35,11 @@ public class Signin extends HttpServlet {
 
         try {
 
-            boolean sucess = signInUser(request);
+            boolean successfulLogin = signInUser(request);
 
-            if(sucess) {
+            if(successfulLogin) {
                 HttpSession currentSession = request.getSession(true);
-                currentSession.setMaxInactiveInterval(2);
+                currentSession.setMaxInactiveInterval(10);
                 response.sendRedirect("/aggielandsecured/profile");
                 //RequestDispatcher rs = request.getRequestDispatcher("html/Profile.jsp");
                 //rs.include(request, response);
@@ -59,8 +59,11 @@ public class Signin extends HttpServlet {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
 
-        User user = null;
+        User user = null; 
 
+//        if(userDAO.userExists(userName) && userDAO.verifiedUser(u)) {
+            
+  //      }
         if(userDAO.verifiedUser(userName,password)) {
             user = userDAO.getUser(userName);
             request.getSession().setAttribute("user",user);

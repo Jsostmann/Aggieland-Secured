@@ -6,9 +6,10 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String email;
-    private int onlineStatus;
     private String userName;
+    private String email;
+    private String profilePictureBase64;
+    private String userInfo;
 
     public User(String firstName, String lastName, String userName, String email) {
         this.firstName = firstName;
@@ -26,13 +27,7 @@ public class User {
         this(null,null,null,null);
     }
 
-    public int getOnlineStatus() {
-        return onlineStatus;
-    }
 
-    public void setOnlineStatus(int onlineStatus) {
-        this.onlineStatus = onlineStatus;
-    }
 
     public String getUserName() {
         return userName;

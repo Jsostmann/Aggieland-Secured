@@ -6,17 +6,27 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
-public class AuthorizationDAO {
+public class AuthoizationUtil {
 
-    private static final Logger LOG = Logger.getLogger(AuthorizationDAO.class.getName());
+    private static final Logger LOG = Logger.getLogger(AuthoizationUtil.class.getName());
 
-    public static String generateSaltedPassword(String enteredPassword) {
-        return BCrypt.hashpw(enteredPassword,BCrypt.gensalt(15));
+    public static String hashSaltedPassword(String saltedPassword, String salt) {
+        return BCrypt.hashpw(saltedPassword,salt);
     }
 
     public static boolean checkPassword(String enteredPassword, String dbPassword) {
         return BCrypt.checkpw(enteredPassword,dbPassword);
     }
+
+    public static String generateSalt() {
+        return BCrypt.gensalt(5);
+    }
+
+
+
+
+
+
 
     public static String hashEncrypt(String plainText) {
         return Hashing.sha512().hashString(plainText, StandardCharsets.UTF_8).toString();
@@ -25,5 +35,9 @@ public class AuthorizationDAO {
     public static boolean checkHashEncrypt(String plainText, String cipherText) {
         String userInput = Hashing.sha512().hashString(plainText, StandardCharsets.UTF_8).toString();
         return userInput.equals(cipherText);
+    }
+
+    public static void main(String[] args) {
+
     }
 }
