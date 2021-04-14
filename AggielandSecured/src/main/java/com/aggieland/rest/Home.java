@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 
 
-public class Home extends HttpServlet {
+public class Home extends AggielandSecuredServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/signin");

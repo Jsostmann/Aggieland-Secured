@@ -14,8 +14,8 @@ public class AuthoizationUtil {
         return BCrypt.hashpw(saltedPassword,salt);
     }
 
-    public static boolean checkPassword(String enteredPassword, String dbPassword) {
-        return BCrypt.checkpw(enteredPassword,dbPassword);
+    public static boolean checkPassword(String saltedPassword, String dbPassword) {
+        return BCrypt.checkpw(saltedPassword,dbPassword);
     }
 
     public static String generateSalt() {
@@ -35,9 +35,5 @@ public class AuthoizationUtil {
     public static boolean checkHashEncrypt(String plainText, String cipherText) {
         String userInput = Hashing.sha512().hashString(plainText, StandardCharsets.UTF_8).toString();
         return userInput.equals(cipherText);
-    }
-
-    public static void main(String[] args) {
-
     }
 }

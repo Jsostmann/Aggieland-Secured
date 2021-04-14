@@ -3,9 +3,12 @@ package com.aggieland.model;
 import com.aggieland.auth.AuthoizationUtil;
 import com.aggieland.database.DatabaseDAO;
 
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.sql.*;
 
 public class UserDAO extends BasicDAO{
@@ -14,7 +17,11 @@ public class UserDAO extends BasicDAO{
         super(databaseConnectionURL,databaseUsername,databasePassword);
     }
 
+
+
     public boolean verifiedUser(String userName, String password) throws SQLException  {
+
+        boolean isVerified = false;
 
         connect();
 
@@ -26,32 +33,32 @@ public class UserDAO extends BasicDAO{
 
         if(result.next()) {
 
+          String dbSaltedPassword = result.getString(6);
+          String dbSalt = result.getString(7);
+
+          StringBuilder enteredSaltedPassword = new StringBuilder(300);
+          enteredSaltedPassword.append(password);
+          enteredSaltedPassword.append(dbSalt);
+
+          isVerified = AuthoizationUtil.checkPassword(enteredSaltedPassword.toString(),dbSaltedPassword);
+
+          System.out.println(isVerified);
+
+
         }
-        boolean verified = result.next();
-        System.out.println("verified: " + verified);
+
         disconnect();
 
-        return  verified;
+        return isVerified;
     }
 
-    public boolean userExists(String userName) throws SQLException {
-        connect();
+    public boolean userExists(String userName) throws SQLException, IOException {
 
-        PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_QUERY);
+      return getUser(userName) != null;
 
-        statement.setString(1, userName);
-
-        ResultSet result = statement.executeQuery();
-
-        boolean userFound = result.next();
-
-        System.out.println("user exists: " + userFound);
-        disconnect();
-
-        return userFound;
     }
 
-    public User getUser(String userName) throws SQLException {
+    public User getUser(String userName) throws SQLException, IOException {
 
         User foundUser = null;
 
@@ -64,11 +71,8 @@ public class UserDAO extends BasicDAO{
         ResultSet result = statement.executeQuery();
 
         if(result.next()) {
-            foundUser = new User();
-            foundUser.setFirstName(result.getString(2));
-            foundUser.setLastName(result.getString(3));
-            foundUser.setEmail(result.getString(4));
-            foundUser.setUserName(userName);
+
+            foundUser = User.createUser(result);
         }
 
         disconnect();
@@ -76,40 +80,88 @@ public class UserDAO extends BasicDAO{
         return foundUser;
     }
 
-    public boolean addUser(User user, String password) throws SQLException, IOException {
+    public User addUser(HttpServletRequest request) throws SQLException {
 
             connect();
 
-            PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ADD_USER_QUERY);
+            User user = User.createUser(request);
+
+            PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ADD_USER_QUERY,Statement.RETURN_GENERATED_KEYS);
+
+            String password = request.getParameter("password");
 
             String salt = AuthoizationUtil.generateSalt();
             StringBuilder saltedPassword = new StringBuilder(50);
             saltedPassword.append(password);
             saltedPassword.append(salt);
 
-            System.out.println(saltedPassword);
-
             String hashedPassword = AuthoizationUtil.hashSaltedPassword(saltedPassword.toString(),salt);
 
-            java.util.Date date = new java.util.Date();
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-
-            InputStream a = Util.getDefaultProfilePic();
-
             statement.setString(1,user.getFirstName());
-            statement.setString(2, user.getLastName());
+            statement.setString(2,user.getLastName());
             statement.setString(3,user.getUserName());
             statement.setString(4,hashedPassword);
             statement.setString(5,salt);
             statement.setString(6,user.getEmail());
-            //statement.setDate(7,sqlDate);
-            statement.setBinaryStream(7,a,57905);
+            statement.setDate(7,user.getDateCreatedAsDate());
             statement.setNull(8,Types.NULL);
+            statement.setNull(9,Types.NULL);
+            statement.setString(10,user.getMajor());
 
             boolean userAdded = statement.executeUpdate() > 0;
 
+            ResultSet primaryKey = statement.getGeneratedKeys();
+
+            long userId = -1;
+
+            if(primaryKey.next()) {
+              userId = primaryKey.getInt(1);
+            }
+
+            user.setUserId(userId);
+
             disconnect();
 
-            return userAdded;
+            return userAdded ? user : null;
+    }
+
+    public User updateUser(HttpServletRequest request) throws SQLException {
+      User updatedUser = (User) request.getSession(false).getAttribute("user");
+
+      return null;
+    }
+
+    public User updateAccount(HttpServletRequest request) throws SQLException, IOException, ServletException {
+      User updatedUser = null;
+
+      Part filePart = request.getPart("profilePicture");
+
+      User.updateUser(request);
+
+      connect();
+
+      PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_USER_QUERY);
+
+      updatedUser = (User)request.getSession(false).getAttribute("user");
+
+      statement.setString(1,updatedUser.getFirstName());
+      statement.setString(2,updatedUser.getLastName());
+      statement.setString(3,updatedUser.getEmail());
+      statement.setString(4,updatedUser.getProfilePictureBase64());
+      statement.setString(5,updatedUser.getUserInfo());
+      statement.setString(6,updatedUser.getMajor());
+      statement.setLong(7,updatedUser.getUserId());
+
+      boolean userUpdated = statement.executeUpdate() > 0;
+
+      if(userUpdated) {
+        System.out.println("user updated");
+      }else{
+        System.out.println("error updating");
+      }
+
+      disconnect();
+
+      return updatedUser;
     }
 }

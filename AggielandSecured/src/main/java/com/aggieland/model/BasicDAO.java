@@ -13,13 +13,14 @@ public abstract class BasicDAO {
     private Connection databaseConnection;
 
     public BasicDAO(String databaseConnectionURL, String databaseUsername, String databasePassword) {
+
         this.databaseConnectionURL = databaseConnectionURL;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
     }
 
-
     protected Connection getDatabaseConnection() {
+
         return databaseConnection;
     }
 
@@ -36,7 +37,8 @@ public abstract class BasicDAO {
     }
 
     protected void disconnect() throws SQLException {
-        if(databaseConnection != null || !databaseConnection.isClosed()) {
+
+        if(databaseConnection != null && !databaseConnection.isClosed()) {
             databaseConnection.close();
         }
     }

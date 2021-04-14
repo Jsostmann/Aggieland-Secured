@@ -1,6 +1,10 @@
-CREATE DATABASE IF NOT EXISTS `aggielandsql`;
+-- -----------------------------------------------------
+-- CONFIG
+-- -----------------------------------------------------
+SET SQL_SAFE_UPDATES = 0;
+-- SET system_time_zone = 'US/Eastern';
 
-use `aggielandsql`;
+
 -- -----------------------------------------------------
 -- Table `user`
 -- -----------------------------------------------------
@@ -13,12 +17,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 	`first_name`VARCHAR(50) NOT NULL,
 	`last_name` VARCHAR(50) NOT NULL,
     `user_name` VARCHAR(50) NOT NULL,
-    `password` VARCHAR(300) NOT NULL,
-    `password_salt` VARCHAR(100) NOT NULL,
-	`email` VARCHAR(50) NOT NULL,
-    `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`email` VARCHAR(100) NOT NULL,
+	`password` VARCHAR(400) NOT NULL,
+    `password_salt` VARCHAR(200) NOT NULL,
+    `date_added` DATE NOT NULL DEFAULT (CURRENT_DATE),
 	`profile_picture` BLOB,
-    `user_info` TEXT,
+	`user_info` TEXT,
+	`major` VARCHAR(100),
 	 PRIMARY KEY (`user_id`),
      UNIQUE INDEX `user_name` (`user_name`)
 ) ENGINE = InnoDB;

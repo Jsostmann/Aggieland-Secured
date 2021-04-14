@@ -17,7 +17,7 @@ $(document).ready(function(){
 function initWebsocket() {
 
     var hostLocation = document.location.host;
-    websocket = new WebSocket("ws://" + hostLocation + "/aggielandsecured/");
+    websocket = new WebSocket("ws://" + hostLocation + "/AggielandSecured/");
 
 
     websocket.onmessage = function(event) {
@@ -67,8 +67,8 @@ function addUserToScreen() {
         "width": "50px",
         "height": "50px"
     });
-
+    var temp = $("<div class=\"d-flex justify-content-start mb-4\"><div class=\"img_cont_msg\"><img src=\"res/favicon.png\" class=\"rounded-circle user_img_msg\"> </div> <div class=\"msg_cotainer\">New User Joined<span class=\"msg_time\">8:40 AM, Today</span></div></div>")
     var users = $('.card-body.msg_card_body');
-    users.append(user);
+    users.append(temp);
 
 }

@@ -18,7 +18,7 @@
         <div class="col-12 header">
             <div class="row logo">
                 <div class="col-4">
-                    <img src="res/logo.png" width="50px" class="m-3">
+                    <img src="res/newLogo.png" width="100px" class="m-3">
                 </div>
                 <div class="col">
                     <h1 class="mx-auto m-3">AggieLand Secure</h1>
@@ -30,11 +30,12 @@
                 <form class="box" action="./signup" method="post">
                     <h1>Sign-up Below!</h1>
                     <p class="text-muted">Create a new Account!</p>
-                    <input type="text" name="firstName" placeholder="First Name">
-                    <input type="text" name="lastName" placeholder="Last Name">
-                    <input type="text" name="userName" placeholder="Username">
-                    <input type="password" name="password" placeholder="Password">
-                    <input type="text" name="email" placeholder="Email">
+                    <input type="text" name="firstName" placeholder="First Name" required>
+                    <input type="text" name="lastName" placeholder="Last Name" required>
+                    <input type="text" name="userName" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="email" placeholder="Email" required>
+                    <input type="text" name="major" placeholder="Major" required>
                     <input type="submit" name="" value="Sign-Up" href="#">
                     <p class="text-muted"><a href="./signin" >Already have an account? Sign-In here</a></p>
                 </form>

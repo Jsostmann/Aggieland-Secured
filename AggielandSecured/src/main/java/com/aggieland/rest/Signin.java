@@ -2,68 +2,89 @@ package com.aggieland.rest;
 
 import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
+import sun.misc.Request;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-public class Signin extends HttpServlet {
+public class Signin extends AggielandSecuredServlet {
 
     UserDAO userDAO;
+    private static final Logger LOG = Logger.getLogger(Signin.class.getName());
 
-    @Override
+
+  @Override
     public void init() throws ServletException {
-
-        String databaseConnectionURL = getServletContext().getInitParameter("databaseURL");
-        String databaseUsername = getServletContext().getInitParameter("databaseUsername");
-        String databasePassword = getServletContext().getInitParameter("databasePassword");
-
-        userDAO = new UserDAO(databaseConnectionURL, databaseUsername, databasePassword);
+        super.init();
+        userDAO = new UserDAO(getDatabaseConnectionURL(),getDatabaseUsername(),getDatabasePassword());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        RequestDispatcher rs = request.getRequestDispatcher("html/Signin.html");
-        rs.include(request, response);
+        HttpSession currentSession = request.getSession(false);
 
+        RequestDispatcher serverResponse;
+
+        if(currentSession != null && !currentSession.isNew()) {
+
+          response.sendRedirect("profile");
+
+        } else {
+
+          serverResponse = request.getRequestDispatcher("html/Signin.html");
+          serverResponse.include(request, response);
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        RequestDispatcher serverResponse;
+
         try {
 
-            boolean successfulLogin = signInUser(request);
+            boolean successfulLogin = userDAO.verifiedUser(request.getParameter("userName"),request.getParameter("password"));
+
 
             if(successfulLogin) {
+                User user = userDAO.getUser(request.getParameter("userName"));
+                LOG.info("User Does Exists, Proceed to login...");
+
                 HttpSession currentSession = request.getSession(true);
-                currentSession.setMaxInactiveInterval(10);
-                response.sendRedirect("/aggielandsecured/profile");
-                //RequestDispatcher rs = request.getRequestDispatcher("html/Profile.jsp");
-                //rs.include(request, response);
+                currentSession.setMaxInactiveInterval(35);
+                currentSession.setAttribute("user",user);
+
+
+                response.sendRedirect("profile");
+
+
             } else {
-                response.sendRedirect("/aggielandsecured/signup");
+              LOG.info("User Does Not Exist, Forward to signup...");
+              response.sendRedirect("signup");
             }
 
-        } catch (SQLException throwables) {
 
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
+
+            serverResponse = request.getRequestDispatcher("html/500.html");
+            serverResponse.forward(request,response);
         }
 
     }
 
-    private boolean signInUser(HttpServletRequest request) throws SQLException {
+
+    private boolean signInUser(HttpServletRequest request) throws SQLException, IOException {
 
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
 
         User user = null; 
 
-//        if(userDAO.userExists(userName) && userDAO.verifiedUser(u)) {
-            
-  //      }
         if(userDAO.verifiedUser(userName,password)) {
             user = userDAO.getUser(userName);
             request.getSession().setAttribute("user",user);

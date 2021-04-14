@@ -39,6 +39,17 @@
     <servlet>
         <servlet-name>Profile</servlet-name>
         <servlet-class>com.aggieland.rest.Profile</servlet-class>
+        <multipart-config>
+            <max-file-size>16177215</max-file-size>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.aggieland.rest.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Search</servlet-name>
+        <servlet-class>com.aggieland.rest.Search</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -66,6 +77,16 @@
         <url-pattern>/profile</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Search</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/html/404.html</location>
@@ -76,4 +97,15 @@
         <location>/html/403.html</location>
     </error-page>
 
+    <!--
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AggielandSecured</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+-->
 </web-app>

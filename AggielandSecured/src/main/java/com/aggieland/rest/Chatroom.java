@@ -8,8 +8,7 @@ import javax.servlet.http.*;
 
 public class Chatroom extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
 
         RequestDispatcher rs = request.getRequestDispatcher("html/Chatroom.html");
