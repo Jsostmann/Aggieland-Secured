@@ -30,7 +30,7 @@ public class Search extends AggielandSecuredServlet {
     if(currentSession != null && !currentSession.isNew()) {
 
       LOG.info("Session is good, continue");
-      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/search.jsp");
+      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/Search2.jsp");
       rs.include(request, response);
 
     } else {

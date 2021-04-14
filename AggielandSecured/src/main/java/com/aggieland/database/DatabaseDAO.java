@@ -15,6 +15,7 @@ public class DatabaseDAO {
   private static ResultSet queryResult = null;
   private static String query = null;
 
+  public static final String USER_SEARCH_QUERY_2 = "SELECT user_id, user_name, concat(first_name, ' ', last_name), email, major from user WHERE first_name LIKE ? AND user_name LIKE ? AND major LIKE ?";
   public static final String UPDATE_USER_QUERY = "UPDATE user SET first_name = ?, last_name = ?, email = ?, profile_picture = ?, user_info = ?, major = ? WHERE user_id = ?;";
   public static final String GET_USER_QUERY = "SELECT * FROM user WHERE user_name = ? and pass_word = ?";
   public static final String USER_SEARCH_QUERY = "SELECT user_id,user_name,concat(first_name,' ',last_name),email,major FROM user WHERE user_name LIKE ? AND major LIKE ?";
@@ -87,9 +88,10 @@ public class DatabaseDAO {
 
 
     connect();
-    PreparedStatement statement = databaseConnection.prepareStatement(DatabaseDAO.USER_SEARCH_QUERY);
-    statement.setString(1,"%");
+    PreparedStatement statement = databaseConnection.prepareStatement(DatabaseDAO.USER_SEARCH_QUERY_2);
+    statement.setString(1,"hans");
     statement.setString(2,"%");
+    statement.setString(3,"%");
     queryResult = statement.executeQuery();
 
     System.out.println("User_id\tuser_name\tfull_name\temail\tmajor");

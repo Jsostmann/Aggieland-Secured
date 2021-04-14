@@ -5,7 +5,8 @@ public enum DatabaseEnums {
   SELECT("SELECT"),
   STAR("*"),
   FROM("FROM"),
-  WHERE("WHERE");
+  WHERE("WHERE"),
+  ANY("%");
 
   private final String value;
 

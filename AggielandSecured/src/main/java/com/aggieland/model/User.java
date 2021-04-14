@@ -25,6 +25,7 @@ public class User {
     private String userInfo;
     private Date dateCreated;
     private String major;
+    private String classification;
 
     public User() {
         this.userInfo = "Nothing Yet";
@@ -81,6 +82,12 @@ public class User {
         return this.major;
     }
 
+    public String getClassification() {
+
+        return classification;
+
+    }
+
     public String getFullName() {
 
       return this.firstName + " " + this.lastName;
@@ -131,6 +138,10 @@ public class User {
         this.dateCreated = dateCreated;
     }
 
+    public void setClasssification(String classification) {
+
+        this.classification = classification;
+    }
 
 
     private static String convertImage(InputStream inputStream) throws IOException {
