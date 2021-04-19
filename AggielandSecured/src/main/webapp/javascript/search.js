@@ -2,13 +2,28 @@ const customSelects = document.querySelectorAll("select");
 const deleteBtn = document.getElementById('delete')
 
 
-$( function() {
+$(document).ready(function() {
+
+    console.log("js running")
+    handleCheckbox();
+
+});
+
+function handleCheckbox() {
+    $(".btn-group").click(function(){
 
 
+        $(".checkbox").toggleClass("checkbox-active");
+
+
+    });
+}
+
+
+$(function() {
     $(".test").flatpickr();
 
-
-} );
+});
 
 const dontSort = new Choices('.dont-sort',
     {
@@ -25,6 +40,7 @@ const choices = new Choices('select',
         itemSelectText: '',
         removeItemButton: true,
     });
+
 for (let i = 0; i < customSelects.length; i++)
 {
     customSelects[i].addEventListener('addItem', function(event)
@@ -43,6 +59,7 @@ for (let i = 0; i < customSelects.length; i++)
         }
     }, false);
 }
+
 deleteBtn.addEventListener("click", function(e)
 {
     e.preventDefault()

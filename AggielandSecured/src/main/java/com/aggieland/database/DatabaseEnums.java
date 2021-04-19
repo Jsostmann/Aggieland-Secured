@@ -14,8 +14,8 @@ public enum DatabaseEnums {
     this.value = value;
   }
 
-  String getSeconds() {
-    return value;
+  public String toString() {
+    return this.value;
   }
 
 }

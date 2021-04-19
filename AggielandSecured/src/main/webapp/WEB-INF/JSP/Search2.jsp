@@ -20,7 +20,7 @@
         <div class="inner-form">
             <div class="basic-search">
                 <div class="input-field">
-                    <input id="search" type="text" placeholder="Student Search"/>
+                    <input id="search" type="text" placeholder="Student's First Name" name="search"/>
                     <div class="icon-wrap">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path
@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="input-field">
                         <div class="input-select">
-                            <select class="regular" data-trigger="" name="choices-single-defaul">
+                            <select class="regular" data-trigger="" name="major">
                                 <option placeholder="" value="">Major</option>
                                 <option>Computer Science</option>
                                 <option>Computer Engineering</option>
@@ -51,19 +51,9 @@
                             </select>
                         </div>
                     </div>
-                    <div class="checkbox">
-                        <!--<label for="fn">First Name</label><input id="fn" value="firstName" type="checkbox">-->
-                        <span id="t">First Name</span>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-danger">
-                                <input type="checkbox" data-trigger="">
-                                <span class="glyphicon glyphicon-ok"></span>
-                            </label>
-                        </div>
-                    </div>
                     <div class="input-field">
                         <div class="input-select">
-                            <select class="dont-sort" data-trigger="" name="choices-single-defaul">
+                            <select class="dont-sort" data-trigger="" name="classification">
                                 <option placeholder="" value="">Classification</option>
                                 <option>Freshman</option>
                                 <option>Sophmore</option>
@@ -72,29 +62,16 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row second">
-                    <div class="input-field">
-                        <div class="input-select">
-                            <select data-trigger="" name="choices-single-defaul">
-                                <option placeholder="" value="">Sale</option>
-                                <option>Subject b</option>
-                            </select>
+                    <div class="checkbox">
+                        <span id="t">User Name</span>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-danger">
+                                <input type="checkbox" data-trigger="" name="username">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </label>
                         </div>
                     </div>
-                    <div class="input-field">
-                        <div class="input-select">
-                            <select data-trigger="" name="choices-single-defaul">
-                                <option placeholder="" value="">Time</option>
-                                <option>Last time</option>
-                                <option>Today</option>
-                                <option>This week</option>
-                                <option>This month</option>
-                                <option>This year</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="date"><label>Date</label><input type="text" class="test" data-input></div>
+
                 </div>
                 <div class="row third">
                     <div class="input-field">
@@ -110,28 +87,9 @@
             </div>
         </div>
     </form>
-    <!--
-      <div style="padding: 15px; width: 100%; display: flex; align-items: center; flex-direction: column; justify-content: space-evenly;">
-        <div class="myrow">
-          <h1>user1</h1>
-        </div>
-        <div class="myrow">
-          <h1>user2</h1>
-        </div>
-        <div class="myrow">
-          <h1>user3</h1>
-        </div>
-    -->
-    <!-- USER RESULT BOX -->
-
-
-    <!-- END USER BOX -->
-
-
-    <!-- USER RESULT BOX style="width: 100%; max-width: 790px; display: flex; justify-content: center;"-->
 
     <div id="results" class="row">
-
+        <h1>TEST</h1>
         <div class="col-xs-12 col-sm-6 col-md-6">
             <div style="background-color: #002d74; border: none;" class="well well-sm">
                 <div class="row userBox">
@@ -204,47 +162,3 @@
 <script src="/AggielandSecured/javascript/search.js"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
-
-<!--
-<div style="width: 100%; max-width: 790px; display: flex; justify-content: center;" class="row">
-<div style="width: 50%;" class="">
-<div style="background-color: navy;" class="well well-sm">
-<div class="row userBox">
-<!
-<div class="col-sm-6 col-md-4">
-<img src="http://placehold.it/300x300" alt="" class="img-rounded img-responsive" />
-</div>
--
-<div class="col-lg-6 col-">
-<h4>${user.FirstName}${user.lastName}</h4>
-<p>
-<i class="glyphicon glyphicon glyphicon-user"></i> ${user.userName}
-<br/>
-<i class="glyphicon glyphicon-envelope"></i> ${user.email}
-<br/>
-<i class="fa fa-graduation-cap"></i> ${user.major}
-<br/>
-<i class="fa fa-calculator"></i> ${user.classification}
-</p>
-
-<div class="btn-group">
-<button type="button" class="btn btn-primary">
-Social</button>
-<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-<span class="caret"></span><span class="sr-only">Social</span>
-</button>
-<ul class="dropdown-menu" role="menu">
-<li><a href="#">Twitter</a></li>
-<li><a href="https://plus.google.com/+Jquery2dotnet/posts">Google +</a></li>
-<li><a href="https://www.facebook.com/jquery2dotnet">Facebook</a></li>
-<li class="divider"></li>
-<li><a href="#">Github</a></li>
-</ul>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-</div>
--->

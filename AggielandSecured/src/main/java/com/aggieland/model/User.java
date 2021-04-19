@@ -143,7 +143,6 @@ public class User {
         this.classification = classification;
     }
 
-
     private static String convertImage(InputStream inputStream) throws IOException {
         String result;
 
@@ -165,6 +164,8 @@ public class User {
         return result;
 
     }
+
+
 
     public static User createUser(ResultSet result) throws SQLException, IOException {
 
@@ -190,9 +191,19 @@ public class User {
         return newUser;
     }
 
-    public static User createUserFromSearch(ResultSet result) {
+    public static User createUserFromSearch(ResultSet result) throws SQLException {
 
-        return null;
+        User newUser = new User();
+
+        newUser.setUserId(result.getLong(1));
+        newUser.setUserName(result.getString(2));
+        newUser.setFirstName(result.getString(3));
+        newUser.setLastName(result.getString(4));
+        newUser.setEmail(result.getString(5));
+        newUser.setMajor(result.getString(6));
+
+        return  newUser;
+
     }
 
     public static User createUser(HttpServletRequest request) {

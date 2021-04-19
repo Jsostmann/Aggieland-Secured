@@ -1078,7 +1078,7 @@ legend {
     padding: 0;
 }
 input[type="checkbox"]:checked {
-    background: linear-gradient(to right, #2c6dd5 0%, #2c6dd5 28%, #ff4b5a 91%, #ff4b5a 100%);
+     background: deeppink;
 }
 .checkbox {
     background: #ccc;
@@ -1101,6 +1101,15 @@ input[type="checkbox"]:checked {
 .btn.active span.glyphicon {
     opacity: 1;
 }
+label.btn.btn-danger {
+    background-color: #7a7a7a;
+    border: none;
+}
+
+.checkbox-active {
+    background: linear-gradient(to right, #2c6dd5 0%, #2c6dd5 28%, #ff4b5a 91%, #ff4b5a 100%);
+    color: white;
+}
 
 #fn:checked::before {
     display: block;
@@ -1109,7 +1118,7 @@ input[type="checkbox"]:checked {
     outline: none;
     color: white;
     text-align: center;
-    background: red;
+    background: orange;
     border: none;
     line-height: 13px;
 }
@@ -1130,7 +1139,7 @@ input[type="checkbox"]:checked {
 #results {
     max-width: 790px;
     width: 100%;
-    margin:20pxa;
+    margin:20px;
 }
 
 .userBox {

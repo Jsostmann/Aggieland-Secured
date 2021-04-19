@@ -1,5 +1,6 @@
 package com.aggieland.rest;
 
+import com.aggieland.model.SearchDAO;
 import com.aggieland.model.UserDAO;
 
 import javax.servlet.RequestDispatcher;
@@ -9,18 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class Search extends AggielandSecuredServlet {
 
-  UserDAO userDAO;
+  SearchDAO searchDAO;
   private static final Logger LOG = Logger.getLogger(Search.class.getName());
 
 
   @Override
   public void init() throws ServletException {
     super.init();
-    userDAO = new UserDAO(getDatabaseConnectionURL(),getDatabaseUsername(),getDatabasePassword());
+    searchDAO = new SearchDAO(getDatabaseConnectionURL(),getDatabaseUsername(),getDatabasePassword());
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,13 +47,15 @@ public class Search extends AggielandSecuredServlet {
 
     if(currentSession != null && !currentSession.isNew()) {
 
-      String majorfilter = request.getParameter("major");
-      String classificationFilter = request.getParameter("classification");
+      try {
+        searchDAO.findUsers(request);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
 
+      //request.setAttribute("filter", major);
 
-      request.setAttribute("filter", majorfilter);
-
-      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/search.jsp");
+      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/Search2.jsp");
       rs.forward(request, response);
 
     } else {

@@ -55,7 +55,7 @@ public class Signin extends AggielandSecuredServlet {
                 LOG.info("User Does Exists, Proceed to login...");
 
                 HttpSession currentSession = request.getSession(true);
-                currentSession.setMaxInactiveInterval(35);
+                currentSession.setMaxInactiveInterval(600);
                 currentSession.setAttribute("user",user);
 
 
