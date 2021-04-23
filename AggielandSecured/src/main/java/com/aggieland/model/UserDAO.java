@@ -10,12 +10,14 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserDAO extends BasicDAO{
 
     public UserDAO(String databaseConnectionURL, String databaseUsername, String databasePassword) {
         super(databaseConnectionURL,databaseUsername,databasePassword);
     }
+
 
 
 
@@ -71,7 +73,6 @@ public class UserDAO extends BasicDAO{
         ResultSet result = statement.executeQuery();
 
         if(result.next()) {
-
             foundUser = User.createUser(result);
         }
 
@@ -125,12 +126,6 @@ public class UserDAO extends BasicDAO{
             return userAdded ? user : null;
     }
 
-    public User updateUser(HttpServletRequest request) throws SQLException {
-      User updatedUser = (User) request.getSession(false).getAttribute("user");
-
-      return null;
-    }
-
     public User updateAccount(HttpServletRequest request) throws SQLException, IOException, ServletException {
       User updatedUser = null;
 
@@ -164,4 +159,5 @@ public class UserDAO extends BasicDAO{
 
       return updatedUser;
     }
+
 }

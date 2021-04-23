@@ -15,10 +15,10 @@ public class DatabaseDAO {
   private static ResultSet queryResult = null;
   private static String query = null;
 
-  public static final String USER_SEARCH_QUERY_2 = "SELECT user_id, user_name, first_name, last_name, email, major from user WHERE first_name LIKE ? AND major LIKE ? AND user_name LIKE ?";
+  public static final String GET_FRIENDS_QUERY = "SELECT * FROM friendship WHERE (user_one_id = ? OR user_two_id = ?) AND status = 1";
+  public static final String USER_SEARCH_QUERY = "SELECT user_id, user_name, first_name, last_name, email, major from user WHERE first_name LIKE ? AND major LIKE ? AND user_name LIKE ?";
   public static final String UPDATE_USER_QUERY = "UPDATE user SET first_name = ?, last_name = ?, email = ?, profile_picture = ?, user_info = ?, major = ? WHERE user_id = ?;";
   public static final String GET_USER_QUERY = "SELECT * FROM user WHERE user_name = ? and pass_word = ?";
-  public static final String USER_SEARCH_QUERY = "SELECT user_id,user_name,concat(first_name,' ',last_name),email,major FROM user WHERE user_name LIKE ? AND major LIKE ?";
   public static final String ADD_USER_QUERY = "INSERT INTO user (first_name, last_name, user_name, password, password_salt, email, date_added, profile_picture, user_info, major) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                                                                                                                                                                                              //1, 2, 3, 4, 5  6  7  8  9  10
   public static final String ADD_USER_QUERY_OLD = "INSERT INTO user (first_name, last_name, user_name, password, password_salt, email, date_added, profile_picture, user_info, major) values(?, ?, ?, ?, ?, ?, CURRENT_DATE, ?, ?, ?)";
@@ -88,20 +88,19 @@ public class DatabaseDAO {
 
 
     connect();
-    PreparedStatement statement = databaseConnection.prepareStatement(DatabaseDAO.USER_SEARCH_QUERY_2);
-    statement.setString(1,"hans");
-    statement.setString(2,"%");
-    statement.setString(3,"%");
+    PreparedStatement statement = databaseConnection.prepareStatement(DatabaseDAO.GET_FRIENDS_QUERY);
+    statement.setLong(1,1);
+    statement.setLong(2,1);
     queryResult = statement.executeQuery();
 
-    System.out.println("User_id\tuser_name\tfull_name\temail\tmajor");
+
     while(queryResult.next()) {
 
       System.out.print(queryResult.getString(1) + "\t");
       System.out.print(queryResult.getString(2) + "\t");
       System.out.print(queryResult.getString(3) + "\t");
       System.out.print(queryResult.getString(4) + "\t");
-      System.out.print(queryResult.getString(5) + "\t");
+
       System.out.println();
     }
 

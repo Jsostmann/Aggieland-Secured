@@ -6,10 +6,17 @@
     <title>Title</title>
 </head>
 <body>
-blah
+
 <c:forEach items="${users}" var="user" >
     <p>${user.firstName}</p>
 </c:forEach>
+
+
+<h1>
+    ${requestScope.searchedUser.firstName}
+</h1>
+
+
 
 </body>
 </html>

@@ -51,8 +51,9 @@ public class Signin extends AggielandSecuredServlet {
 
 
             if(successfulLogin) {
-                User user = userDAO.getUser(request.getParameter("userName"));
                 LOG.info("User Does Exists, Proceed to login...");
+
+                User user = userDAO.getUser(request.getParameter("userName"));
 
                 HttpSession currentSession = request.getSession(true);
                 currentSession.setMaxInactiveInterval(600);

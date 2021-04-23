@@ -166,7 +166,6 @@ public class User {
     }
 
 
-
     public static User createUser(ResultSet result) throws SQLException, IOException {
 
         User newUser = new User();

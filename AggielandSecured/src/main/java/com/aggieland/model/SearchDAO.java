@@ -25,7 +25,7 @@ public class SearchDAO extends BasicDAO {
 
     connect();
 
-    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.USER_SEARCH_QUERY_2);
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.USER_SEARCH_QUERY);
 
     System.out.println(major);
     System.out.println(userName);
