@@ -23,8 +23,8 @@
                     <div class="card-body text-center bg-primary rounded-top">
                         <div class="user-box">
                             <!--<img src="/AggielandSecured/res/favicon.png" alt="user avatar">-->
-                            <!--<img src="data:image/jpg;base64,${user.profilePictureBase64}" width="100" height="100">-->
-                            <img src="${user.profilePictureBase64}" width="100" height="100">
+                            <!--<img src="data:image/jpg;base64,${sessionScope.user.profilePictureBase64}" width="100" height="100">-->
+                            <img src="${sessionScope.user.profilePictureBase64}" width="100" height="100">
                         </div>
                         <h5 class="mb-1 text-white">${sessionScope.user.getFullName()}</h5>
                         <h6 class="text-light">Student</h6>

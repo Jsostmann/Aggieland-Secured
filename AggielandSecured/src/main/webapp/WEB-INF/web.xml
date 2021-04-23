@@ -51,6 +51,10 @@
         <servlet-name>Search</servlet-name>
         <servlet-class>com.aggieland.rest.Search</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserProfile</servlet-name>
+        <servlet-class>com.aggieland.rest.UserProfile</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
@@ -85,6 +89,11 @@
     <servlet-mapping>
         <servlet-name>Search</servlet-name>
         <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UserProfile</servlet-name>
+        <url-pattern>/UserProfile/*</url-pattern>
     </servlet-mapping>
 
     <error-page>

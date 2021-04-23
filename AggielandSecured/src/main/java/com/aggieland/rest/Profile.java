@@ -25,7 +25,7 @@ public class Profile extends AggielandSecuredServlet{
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        System.out.println(request.getPathInfo());
         HttpSession a = request.getSession(false);
         if(a != null && !a.isNew()) {
             LOG.info("Session is good, continue");

@@ -1,6 +1,7 @@
 package com.aggieland.rest;
 
 import com.aggieland.model.SearchDAO;
+import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Search extends AggielandSecuredServlet {
@@ -32,7 +34,7 @@ public class Search extends AggielandSecuredServlet {
     if(currentSession != null && !currentSession.isNew()) {
 
       LOG.info("Session is good, continue");
-      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/Search2.jsp");
+      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/search.jsp");
       rs.include(request, response);
 
     } else {
@@ -43,19 +45,26 @@ public class Search extends AggielandSecuredServlet {
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     HttpSession currentSession = request.getSession(false);
 
     if(currentSession != null && !currentSession.isNew()) {
 
+      ArrayList<User> results = null;
+
       try {
-        searchDAO.findUsers(request);
+
+        results = searchDAO.findUsers(request);
+
       } catch (SQLException e) {
+
         e.printStackTrace();
+
       }
 
-      //request.setAttribute("filter", major);
+      request.setAttribute("results",results);
 
-      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/Search2.jsp");
+      RequestDispatcher rs = request.getRequestDispatcher("WEB-INF/JSP/search.jsp");
       rs.forward(request, response);
 
     } else {

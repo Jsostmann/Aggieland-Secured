@@ -1,7 +1,6 @@
 package com.aggieland.model;
 
 import com.aggieland.database.DatabaseDAO;
-import com.aggieland.database.DatabaseEnums;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.PreparedStatement;
@@ -28,10 +27,14 @@ public class SearchDAO extends BasicDAO {
 
     PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.USER_SEARCH_QUERY_2);
 
+    System.out.println(major);
+    System.out.println(userName);
+    System.out.println(searchValue);
 
-    statement.setString(1, userName != null ? String.valueOf(DatabaseEnums.ANY) : searchValue);
-    statement.setString(2, !major.isEmpty() ? major : String.valueOf(DatabaseEnums.ANY));
-    statement.setString(3, userName != null ? searchValue : String.valueOf(DatabaseEnums.ANY));
+    //statement.setString(1, userName != null ? "%" : !searchValue.isEmpty() ? searchValue : "%");
+    statement.setString(1, userName != null ? "%" : searchValue);
+    statement.setString(2, !major.isEmpty() ? major : "%");
+    statement.setString(3, userName != null ? searchValue : "%");
 
     ResultSet result = statement.executeQuery();
 
@@ -39,11 +42,9 @@ public class SearchDAO extends BasicDAO {
       users.add(User.createUserFromSearch(result));
     }
 
-    System.out.println(users.size());
-
     disconnect();
 
-    return null;
+    return users;
   }
 
 }
