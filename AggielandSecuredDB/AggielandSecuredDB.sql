@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS `user` (
     `date_added` DATE NOT NULL DEFAULT (CURRENT_DATE),
 	`profile_picture` BLOB,
 	`user_info` TEXT,
-	`major` VARCHAR(100),
+	`major` VARCHAR(100) NOT NULL,
+	`classification` VARCHAR(30) NOT NULL,
 	 PRIMARY KEY (`user_id`),
      UNIQUE INDEX `user_name` (`user_name`)
 ) ENGINE = InnoDB;
@@ -55,8 +56,8 @@ SHOW WARNINGS;
 
 CREATE TABLE IF NOT EXISTS `conversation` (
 	`conversation_id` INT NOT NULL AUTO_INCREMENT,
+	`conversation_title` VARCHAR(255) NOT NULL,
 	`creator_id` INT NOT NULL,
-    `time_sent` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	 PRIMARY KEY (`conversation_id`)
 )ENGINE = InnoDB;
 

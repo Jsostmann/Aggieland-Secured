@@ -19,7 +19,22 @@ public class UserDAO extends BasicDAO{
     }
 
 
+    public User getUser(long userID) throws SQLException, IOException {
 
+      User foundUser = null;
+
+      PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_BY_ID);
+
+      statement.setLong(1, userID);
+
+      ResultSet result = statement.executeQuery();
+
+      if(result.next()) {
+        foundUser = User.createUserFromSearch(result);
+      }
+
+      return foundUser;
+    }
 
     public boolean verifiedUser(String userName, String password) throws SQLException  {
 

@@ -26,6 +26,17 @@ body{
     outline: none !important;
 }
 
+#is-friend{
+    background-color: red !important;
+}
+#pending-friend{
+    border: none;
+    background-color: #7a7a7a !important;
+}
+#not-friend{
+    background-color: lawngreen !important;
+}
+
 .customButton:focus{
     box-shadow: none !important;
     border: none !important;

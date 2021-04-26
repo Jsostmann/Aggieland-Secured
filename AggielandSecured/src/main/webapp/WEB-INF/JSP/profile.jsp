@@ -71,6 +71,7 @@
             <div style=" height: 100%; padding: 2px;" class="card z-depth-3">
                 <div style="background-color: whitesmoke; margin-top: 0px;" class="card-body">
                     <ul class="nav nav-pills nav-pills-primary nav-justified">
+
                         <li class="nav-item">
                             <a href="javascript:" data-target="#profile" data-toggle="pill"
                                class="nav-link active show"><i class="icon-user"></i> <span
@@ -79,6 +80,14 @@
                         <li class="nav-item">
                             <a href="javascript:" data-target="#edit" data-toggle="pill" class="nav-link"><i
                                     class="icon-note"></i> <span class="hidden-xs">Edit</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:" data-target="#friends" data-toggle="pill" class="nav-link"><i
+                                    class="icon-note"></i> <span class="hidden-xs">Friends</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:" data-target="#requests" data-toggle="pill" class="nav-link"><i
+                                    class="icon-note"></i> <span class="hidden-xs">Requests</span></a>
                         </li>
                     </ul>
                     <div style="margin-top: 89px;" class="tab-content p-3">
@@ -162,7 +171,24 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
+                        <div class="tab-pane" id="friends">
+                            <div style="" class="row">
+                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">Friends</h5>
+                                <div style="text-align: left;" class="col-md-12">
+                                    <h6>Friends</h6>
+                                    <p>Friends</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="requests">
+                            <div style="" class="row">
+                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">Requests</h5>
+                                <div style="text-align: left;" class="col-md-12">
+                                    <h6>Requests</h6>
+                                    <p>Requests</p>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>

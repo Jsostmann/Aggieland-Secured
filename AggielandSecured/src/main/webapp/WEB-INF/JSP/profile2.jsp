@@ -65,7 +65,7 @@
                             <c:otherwise>
                                 <div class="row text-center mt-4">
                                     <div class="col p-2">
-                                        <a style="width: 100%;  margin-top: 10px;" href="/AggielandSecured/addFriend" class="btn btn-success" aria-disabled="true">Add Friend</a>
+                                        <a style="width: 100%;  margin-top: 10px;" href="/AggielandSecured/addFriend" id="${requestScope.friendStatus}" class="btn btn-success disabled">${requestScope.friendStatus}Add Friend</a>
                                     </div>
                                 </div>
                             </c:otherwise>

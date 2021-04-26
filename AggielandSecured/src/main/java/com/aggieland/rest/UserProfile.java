@@ -1,5 +1,6 @@
 package com.aggieland.rest;
 
+import com.aggieland.database.DatabaseDAO;
 import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
 import java.io.*;
@@ -27,6 +28,7 @@ public class UserProfile extends AggielandSecuredServlet {
     HttpSession a = request.getSession(false);
 
     if(a != null && !a.isNew()) {
+
       LOG.info("Session is good, continue");
       String searchedUserName = request.getPathInfo().replace("/","");
       RequestDispatcher rs;
@@ -36,11 +38,27 @@ public class UserProfile extends AggielandSecuredServlet {
         User searchedUser = userDAO.getUser(searchedUserName);
         User me = (User) a.getAttribute("user");
 
+        //ArrayList<User> friends = userDAO.getFriends(me.getUserId());
 
+        long friendSignifier = userDAO.areFriends(searchedUser.getUserId(),me.getUserId());
 
+        String friendStatus;
+
+        if(friendSignifier == DatabaseDAO.IS_FRIEND) {
+          friendStatus = "is-friend";
+
+        } else if(friendSignifier == DatabaseDAO.PENDING_FRIEND) {
+          friendStatus = "pending-friend";
+
+        } else {
+          friendStatus = "not-friend";
+
+        }
+
+        request.setAttribute("friendStatus",friendStatus);
         request.setAttribute("searchedUser",searchedUser);
         rs = request.getRequestDispatcher("/WEB-INF/JSP/profile2.jsp");
-        rs.include(request,response);
+        rs.forward(request,response);
 
       } catch (SQLException e) {
         e.printStackTrace();

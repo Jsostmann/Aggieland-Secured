@@ -195,6 +195,7 @@ public class User {
         User newUser = new User();
 
         newUser.setUserId(result.getLong(1));
+        System.out.println("Result col 2: " + result.getString(2));
         newUser.setUserName(result.getString(2));
         newUser.setFirstName(result.getString(3));
         newUser.setLastName(result.getString(4));
@@ -204,6 +205,7 @@ public class User {
         return  newUser;
 
     }
+
 
     public static User createUser(HttpServletRequest request) {
         User newUser = new User();
