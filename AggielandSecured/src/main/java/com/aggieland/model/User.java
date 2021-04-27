@@ -195,7 +195,6 @@ public class User {
         User newUser = new User();
 
         newUser.setUserId(result.getLong(1));
-        System.out.println("Result col 2: " + result.getString(2));
         newUser.setUserName(result.getString(2));
         newUser.setFirstName(result.getString(3));
         newUser.setLastName(result.getString(4));

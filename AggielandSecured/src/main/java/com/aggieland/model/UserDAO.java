@@ -12,183 +12,283 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserDAO extends BasicDAO{
+public class UserDAO extends BasicDAO {
 
-    public UserDAO(String databaseConnectionURL, String databaseUsername, String databasePassword) {
-        super(databaseConnectionURL,databaseUsername,databasePassword);
+  public UserDAO(String databaseConnectionURL, String databaseUsername, String databasePassword) {
+    super(databaseConnectionURL, databaseUsername, databasePassword);
+  }
+
+
+  public boolean verifiedUser(String userName, String password) throws SQLException {
+
+    boolean isVerified = false;
+
+    connect();
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_QUERY);
+
+    statement.setString(1, userName);
+
+    ResultSet result = statement.executeQuery();
+
+    if (result.next()) {
+
+      String dbSaltedPassword = result.getString(6);
+      String dbSalt = result.getString(7);
+
+      StringBuilder enteredSaltedPassword = new StringBuilder(300);
+      enteredSaltedPassword.append(password);
+      enteredSaltedPassword.append(dbSalt);
+
+      isVerified = AuthoizationUtil.checkPassword(enteredSaltedPassword.toString(), dbSaltedPassword);
+
+      System.out.println(isVerified);
+
+
     }
 
+    disconnect();
 
-    public User getUser(long userID) throws SQLException, IOException {
+    return isVerified;
+  }
 
-      User foundUser = null;
+  public boolean userExists(String userName) throws SQLException, IOException {
 
-      PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_BY_ID);
+    return getUser(userName) != null;
 
-      statement.setLong(1, userID);
+  }
 
-      ResultSet result = statement.executeQuery();
+  public User getUser(String userName) throws SQLException, IOException {
 
-      if(result.next()) {
-        foundUser = User.createUserFromSearch(result);
+    User foundUser = null;
+
+    connect();
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_QUERY);
+
+    statement.setString(1, userName);
+
+    ResultSet result = statement.executeQuery();
+
+    if (result.next()) {
+      foundUser = User.createUser(result);
+    }
+
+    disconnect();
+
+    return foundUser;
+  }
+
+  public User addUser(HttpServletRequest request) throws SQLException {
+
+    connect();
+
+    User user = User.createUser(request);
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ADD_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
+
+    String password = request.getParameter("password");
+
+    String salt = AuthoizationUtil.generateSalt();
+    StringBuilder saltedPassword = new StringBuilder(50);
+    saltedPassword.append(password);
+    saltedPassword.append(salt);
+
+    String hashedPassword = AuthoizationUtil.hashSaltedPassword(saltedPassword.toString(), salt);
+
+    statement.setString(1, user.getFirstName());
+    statement.setString(2, user.getLastName());
+    statement.setString(3, user.getUserName());
+    statement.setString(4, hashedPassword);
+    statement.setString(5, salt);
+    statement.setString(6, user.getEmail());
+    statement.setDate(7, user.getDateCreatedAsDate());
+    statement.setNull(8, Types.NULL);
+    statement.setNull(9, Types.NULL);
+    statement.setString(10, user.getMajor());
+
+    boolean userAdded = statement.executeUpdate() > 0;
+
+    ResultSet primaryKey = statement.getGeneratedKeys();
+
+    long userId = -1;
+
+    if (primaryKey.next()) {
+      userId = primaryKey.getInt(1);
+    }
+
+    user.setUserId(userId);
+
+    disconnect();
+
+    return userAdded ? user : null;
+  }
+
+  public User updateAccount(HttpServletRequest request) throws SQLException, IOException, ServletException {
+    User updatedUser = null;
+
+    Part filePart = request.getPart("profilePicture");
+
+    User.updateUser(request);
+
+    connect();
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_USER_QUERY);
+
+    updatedUser = (User) request.getSession(false).getAttribute("user");
+
+    statement.setString(1, updatedUser.getFirstName());
+    statement.setString(2, updatedUser.getLastName());
+    statement.setString(3, updatedUser.getEmail());
+    statement.setString(4, updatedUser.getProfilePictureBase64());
+    statement.setString(5, updatedUser.getUserInfo());
+    statement.setString(6, updatedUser.getMajor());
+    statement.setLong(7, updatedUser.getUserId());
+
+    boolean userUpdated = statement.executeUpdate() > 0;
+
+    if (userUpdated) {
+      System.out.println("user updated");
+    } else {
+      System.out.println("error updating");
+    }
+
+    disconnect();
+
+    return updatedUser;
+  }
+
+  public User getUser(long userID) throws SQLException, IOException {
+
+    User foundUser = null;
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_BY_ID);
+
+    statement.setLong(1, userID);
+
+    ResultSet result = statement.executeQuery();
+
+    if (result.next()) {
+      foundUser = User.createUserFromSearch(result);
+    }
+
+    return foundUser;
+  }
+
+  public ArrayList<User> getFriends(long userID) throws SQLException, IOException {
+
+    ArrayList<User> friends = new ArrayList<User>();
+
+    connect();
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.GET_FRIENDS_QUERY);
+
+    statement.setLong(1, userID);
+    statement.setLong(2, userID);
+
+    ResultSet results = statement.executeQuery();
+
+    while (results.next()) {
+
+      long friendID = results.getLong(1) != userID ? results.getLong(1) : results.getLong(2);
+
+      if (results.getLong(4) == DatabaseDAO.IS_FRIEND) {
+
+        User currentFriend = getUser(friendID);
+
+        if (currentFriend != null) {
+          friends.add(currentFriend);
+        }
       }
 
-      return foundUser;
     }
 
-    public boolean verifiedUser(String userName, String password) throws SQLException  {
+    disconnect();
+    return friends;
 
-        boolean isVerified = false;
+  }
 
-        connect();
+  public long areFriends(long userID, long myID) throws SQLException {
 
-        PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_QUERY);
+    long friendStatus = -1;
 
-        statement.setString(1, userName);
+    connect();
 
-        ResultSet result = statement.executeQuery();
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ARE_FRIENDS_QUERY);
 
-        if(result.next()) {
-
-          String dbSaltedPassword = result.getString(6);
-          String dbSalt = result.getString(7);
-
-          StringBuilder enteredSaltedPassword = new StringBuilder(300);
-          enteredSaltedPassword.append(password);
-          enteredSaltedPassword.append(dbSalt);
-
-          isVerified = AuthoizationUtil.checkPassword(enteredSaltedPassword.toString(),dbSaltedPassword);
-
-          System.out.println(isVerified);
+    statement.setLong(1, Long.min(userID, myID));
+    statement.setLong(2, Long.max(userID, myID));
 
 
-        }
+    ResultSet result = statement.executeQuery();
 
-        disconnect();
 
-        return isVerified;
+    while (result.next()) {
+      System.out.print("User one id: " + result.getLong(1));
+      System.out.print("Useer two id: " + result.getLong(2));
+      System.out.print("recent_user id: " + result.getLong(3));
+      System.out.print("status: " + result.getLong(4));
+      System.out.println();
+
+      friendStatus = result.getLong(4);
     }
 
-    public boolean userExists(String userName) throws SQLException, IOException {
+    disconnect();
 
-      return getUser(userName) != null;
+    return friendStatus;
+  }
 
-    }
+  public boolean removeFriend(long userID, long myID) throws SQLException {
 
-    public User getUser(String userName) throws SQLException, IOException {
+    connect();
 
-        User foundUser = null;
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.DELETE_FRIEND_QUERY);
 
-        connect();
+    statement.setLong(1, Long.min(userID, myID));
+    statement.setLong(2, Long.max(userID, myID));
 
-        PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_QUERY);
+    boolean result = statement.executeUpdate() > 0;
 
-        statement.setString(1, userName);
+    disconnect();
 
-        ResultSet result = statement.executeQuery();
+    return result;
 
-        if(result.next()) {
-            foundUser = User.createUser(result);
-        }
+  }
 
-        disconnect();
+  public boolean updateFriendStatus(long userID, long myID, int status) throws SQLException {
 
-        return foundUser;
-    }
+    connect();
 
-    public User addUser(HttpServletRequest request) throws SQLException {
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_USER_QUERY);
 
-            connect();
+    statement.setLong(1, Long.min(userID, myID));
+    statement.setLong(2, Long.max(userID, myID));
+    statement.setLong(3, status);
 
-            User user = User.createUser(request);
+    boolean result = statement.executeUpdate() > 0;
 
-            PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ADD_USER_QUERY,Statement.RETURN_GENERATED_KEYS);
+    disconnect();
 
-            String password = request.getParameter("password");
+    return result;
 
-            String salt = AuthoizationUtil.generateSalt();
-            StringBuilder saltedPassword = new StringBuilder(50);
-            saltedPassword.append(password);
-            saltedPassword.append(salt);
+  }
 
-            String hashedPassword = AuthoizationUtil.hashSaltedPassword(saltedPassword.toString(),salt);
+  public boolean addFriend(long userID, long myID) throws SQLException {
+    connect();
 
-            statement.setString(1,user.getFirstName());
-            statement.setString(2,user.getLastName());
-            statement.setString(3,user.getUserName());
-            statement.setString(4,hashedPassword);
-            statement.setString(5,salt);
-            statement.setString(6,user.getEmail());
-            statement.setDate(7,user.getDateCreatedAsDate());
-            statement.setNull(8,Types.NULL);
-            statement.setNull(9,Types.NULL);
-            statement.setString(10,user.getMajor());
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ADD_FRIEND_QUERY);
 
-            boolean userAdded = statement.executeUpdate() > 0;
+    statement.setLong(1, Long.min(userID, myID));
+    statement.setLong(2, Long.max(userID, myID));
+    statement.setLong(3,myID);
+    statement.setLong(4,0);
 
-            ResultSet primaryKey = statement.getGeneratedKeys();
+    boolean result = statement.executeUpdate() > 0;
 
-            long userId = -1;
+    disconnect();
 
-            if(primaryKey.next()) {
-              userId = primaryKey.getInt(1);
-            }
+    return result;
+  }
 
-            user.setUserId(userId);
-
-            disconnect();
-
-            return userAdded ? user : null;
-    }
-
-    public User updateAccount(HttpServletRequest request) throws SQLException, IOException, ServletException {
-      User updatedUser = null;
-
-      Part filePart = request.getPart("profilePicture");
-
-      User.updateUser(request);
-
-      connect();
-
-      PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_USER_QUERY);
-
-      updatedUser = (User)request.getSession(false).getAttribute("user");
-
-      statement.setString(1,updatedUser.getFirstName());
-      statement.setString(2,updatedUser.getLastName());
-      statement.setString(3,updatedUser.getEmail());
-      statement.setString(4,updatedUser.getProfilePictureBase64());
-      statement.setString(5,updatedUser.getUserInfo());
-      statement.setString(6,updatedUser.getMajor());
-      statement.setLong(7,updatedUser.getUserId());
-
-      boolean userUpdated = statement.executeUpdate() > 0;
-
-      if(userUpdated) {
-        System.out.println("user updated");
-      }else{
-        System.out.println("error updating");
-      }
-
-      disconnect();
-
-      return updatedUser;
-    }
-public User getUser(long userID) throws SQLException, IOException {
-
- User foundUser = null;
-
- PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.FIND_USER_BY_ID);
-
- statement.setLong(1, userID);
-
- ResultSet result = statement.executeQuery();
-
- if(result.next()) {
-   foundUser = User.createUserFromSearch(result);
- }
-
- return foundUser;
-}
 
 }

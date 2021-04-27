@@ -26,15 +26,18 @@ body{
     outline: none !important;
 }
 
-#is-friend{
+.is-friend{
     background-color: red !important;
+    border: 1px solid transparent;
 }
-#pending-friend{
+
+.btn-success.disabled {
     border: none;
-    background-color: #7a7a7a !important;
+    background-color: #7a7a7a;
 }
-#not-friend{
-    background-color: lawngreen !important;
+
+.is-friend:hover, .btn-success:hover {
+  border-color: black;
 }
 
 .customButton:focus{

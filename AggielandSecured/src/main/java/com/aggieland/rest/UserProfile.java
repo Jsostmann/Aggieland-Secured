@@ -79,7 +79,39 @@ public class UserProfile extends AggielandSecuredServlet {
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    processRequest(request,response);
+
+    HttpSession a = request.getSession(false);
+
+    if(a != null && !a.isNew()) {
+      LOG.info("Session is good");
+
+      try {
+
+        String searchedUserName = request.getPathInfo().replace("/","");
+
+        User searchedUser = userDAO.getUser(searchedUserName);
+        User me = (User) a.getAttribute("user");
+
+        long friendSignifier = userDAO.areFriends(searchedUser.getUserId(),me.getUserId());
+
+
+        if(friendSignifier == DatabaseDAO.IS_FRIEND) {
+          userDAO.removeFriend(searchedUser.getUserId(),me.getUserId());
+
+        } else {
+          userDAO.addFriend(searchedUser.getUserId(),me.getUserId());
+        }
+
+        processRequest(request,response);
+
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+
+    } else {
+      LOG.info("Session is bad, redirecting back home");
+      response.sendRedirect(request.getContextPath() + "/signin");
+    }
 
   }
 

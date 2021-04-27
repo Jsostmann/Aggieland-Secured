@@ -17,7 +17,7 @@ $(document).ready(function(){
 function initWebsocket() {
 
     var hostLocation = document.location.host;
-    websocket = new WebSocket("ws://" + hostLocation + "/AggielandSecured/");
+    websocket = new WebSocket("ws://" + hostLocation + "/AggielandSecured/james");
 
 
     websocket.onmessage = function(event) {

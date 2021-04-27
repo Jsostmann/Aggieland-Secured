@@ -16,6 +16,7 @@
 
 <c:if test = "${requestScope.get('searchedUser') != null}">
     <c:set var = "data" scope = "request" value = "${requestScope.get('searchedUser')}"/>
+    <c:set var = "disabled" scope = "request" value = "${requestScope.get('friendStatus').equals('pending-friend') ? 'disabled' : ''}"/>
 </c:if>
 
 <body>
@@ -53,36 +54,53 @@
                             </li>
                         </ul>
 
-                        <c:choose>
-                            <c:when test = "${requestScope.get('searchedUser') == null || requestScope.get('searchedUser').userName.equals(sessionScope.get('user').userName)}">
-                                <div class="row text-center mt-4">
-                                    <div class="col p-2">
-                                        <a style="width: 100%;  margin-top: 10px; background-color: #002d74" href="/AggielandSecured/logout" class="btn btn-primary" >Logout</a>
-                                    </div>
-                                </div>
-                            </c:when>
+                        <div class="row text-center mt-4">
+                            <div class="col p-2">
+                                <form id="friendRequest" method="post" action="/AggielandSecured/UserProfile/${requestScope.searchedUser.userName}"></form>
 
-                            <c:otherwise>
-                                <div class="row text-center mt-4">
-                                    <div class="col p-2">
-                                        <a style="width: 100%;  margin-top: 10px;" href="/AggielandSecured/addFriend" id="${requestScope.friendStatus}" class="btn btn-success disabled">${requestScope.friendStatus}Add Friend</a>
-                                    </div>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
+                            <%-- pick whether to display logout or friend button --%>
+                                <c:choose>
+
+                                    <c:when test = "${requestScope.get('searchedUser') == null || requestScope.get('searchedUser').userName.equals(sessionScope.get('user').userName)}">
+                                        <a style="width: 100%;  margin-top: 10px; background-color: #002d74" href="/AggielandSecured/logout" class="btn btn-primary" >Logout</a>
+                                    </c:when>
+
+                                    <%-- is a friend --%>
+                                    <c:when test="${requestScope.friendStatus.equals('is-friend')}">
+                                        <a onclick="document.getElementById('friendRequest').submit();" style="width: 100%;  margin-top: 10px;" class="btn btn-success is-friend">Remove Friend</a>
+                                    </c:when>
+
+                                    <%-- pending friend --%>
+                                    <c:when test="${requestScope.friendStatus.equals('pending-friend')}">
+                                        <a style="width: 100%;  margin-top: 10px;" href="/AggielandSecured/addFriend" class="btn btn-success disabled">Pending Friend</a>
+                                    </c:when>
+
+                                    <%-- NOT a friend --%>
+                                    <c:otherwise>
+                                        <a onclick="document.getElementById('friendRequest').submit();" style="width: 100%;  margin-top: 10px;" class="btn btn-success">Add Friend</a>
+                                    </c:otherwise>
+
+                                </c:choose>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
         <div style="" class="col-lg-8">
             <div style=" height: 100%; padding: 2px;" class="card z-depth-3">
                 <div style="background-color: whitesmoke; margin-top: 0px;" class="card-body">
                     <ul class="nav nav-pills nav-pills-primary nav-justified">
+
                         <li class="nav-item">
                             <a href="javascript:" data-target="#profile" data-toggle="pill"
                                class="nav-link active show"><i class="icon-user"></i> <span
                                     class="hidden-xs">Profile</span></a>
                         </li>
+
+                        <%-- Display edit profile tab --%>
                         <c:if test = "${requestScope.get('searchedUser') == null || requestScope.get('searchedUser').userName.equals(sessionScope.get('user').userName)}">
                             <li class="nav-item">
                                 <a href="javascript:" data-target="#edit" data-toggle="pill" class="nav-link"><i
@@ -114,6 +132,7 @@
                             <!--/row-->
                         </div>
 
+                        <%-- Display edit profile page --%>
                         <c:if test = "${requestScope.get('searchedUser') == null || requestScope.get('searchedUser').userName.equals(sessionScope.get('user').userName)}">
                             <div class="tab-pane" id="edit">
                                 <form action="/AggielandSecured/profile" method="post" enctype="multipart/form-data">

@@ -11,6 +11,9 @@
     <title>${sessionScope.user.firstName}'s page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
     <link href="/AggielandSecured/stylesheets/profile.css" rel="stylesheet">
 </head>
 
@@ -52,13 +55,14 @@
                         </ul>
 
                         <div class="row text-center mt-4">
-                           <!-- <div class="col p-2">
-                                <h4 class="mb-1 line-height-5">2.2k</h4>
-                                <small class="mb-0 font-weight-bold">Followers</small>
-                            </div>
-                            -->
+                            <!-- <div class="col p-2">
+                                 <h4 class="mb-1 line-height-5">2.2k</h4>
+                                 <small class="mb-0 font-weight-bold">Followers</small>
+                             </div>
+                             -->
                             <div class="col p-2">
-                                <a style="width: 100%;  margin-top: 10px; background-color: #002d74" href="logout" class="btn btn-primary" >Logout</a>
+                                <a style="width: 100%;  margin-top: 10px; background-color: #002d74" href="logout"
+                                   class="btn btn-primary">Logout</a>
                             </div>
 
                         </div>
@@ -86,14 +90,28 @@
                                     class="icon-note"></i> <span class="hidden-xs">Friends</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:" data-target="#requests" data-toggle="pill" class="nav-link"><i
+                            <a data-bs-toggle="offcanvas"
+                               data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" class="nav-link"><i
                                     class="icon-note"></i> <span class="hidden-xs">Requests</span></a>
+
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                                 aria-labelledby="offcanvasRightLabel">
+                                <div class="offcanvas-header">
+                                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+                                    <button type="button" class="btn-close text-reset"
+                                            data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    ...
+                                </div>
+                            </div>
                         </li>
                     </ul>
                     <div style="margin-top: 89px;" class="tab-content p-3">
                         <div class="tab-pane active show" id="profile">
                             <div style="" class="row">
-                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">User Profile</h5>
+                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">User
+                                    Profile</h5>
                                 <div style="text-align: left;" class="col-md-12">
                                     <h6>About Me</h6>
                                     <p>${sessionScope.user.userInfo}</p>
@@ -103,10 +121,13 @@
 
                             <div style="align-content: center; height: 150px;" class="row">
                                 <div style="text-align: center;" class="col-md-6">
-                                    <a style="width: 100%;  margin-top: 10px; line-height: 30px; border: 3px solid black;" href="/AggielandSecured/chatroom" class="btn btn-primary customButton">Chat Room</a>
+                                    <a style="width: 100%;  margin-top: 10px; line-height: 30px; border: 3px solid black;"
+                                       href="/AggielandSecured/chatroom" class="btn btn-primary customButton">Chat
+                                        Room</a>
                                 </div>
                                 <div style="text-align: center;" class="col-md-6">
-                                    <a style="width: 100%;  margin-top: 10px; line-height: 30px; border: 3px solid black;" href="/AggielandSecured/search" class="btn btn-primary customButton">Search</a>
+                                    <a style="width: 100%;  margin-top: 10px; line-height: 30px; border: 3px solid black;"
+                                       href="/AggielandSecured/search" class="btn btn-primary customButton">Search</a>
                                 </div>
                             </div>
 
@@ -117,7 +138,8 @@
                                 <div class="form-group row">
                                     <label class="col-lg-3 col-form-label form-control-label">First name</label>
                                     <div class="col-lg-9">
-                                        <input class="form-control" type="text" name="firstName" placeholder="First Name">
+                                        <input class="form-control" type="text" name="firstName"
+                                               placeholder="First Name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -141,13 +163,15 @@
                                 <div class="form-group row">
                                     <label class="col-lg-3 col-form-label form-control-label">Password</label>
                                     <div class="col-lg-9">
-                                        <input class="form-control" type="password" name="password" placeholder="New Password">
+                                        <input class="form-control" type="password" name="password"
+                                               placeholder="New Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-lg-3 col-form-label form-control-label">Confirm Password</label>
                                     <div class="col-lg-9">
-                                        <input class="form-control" type="password" name="confirmPassword" placeholder="Confirm New Password">
+                                        <input class="form-control" type="password" name="confirmPassword"
+                                               placeholder="Confirm New Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -159,7 +183,8 @@
                                 <div class="form-group row">
                                     <label class="col-lg-3 col-form-label form-control-label">User Info</label>
                                     <div class="col-lg-9">
-                                        <input class="form-control" type="text" name="userInfo" placeholder="Enter some cool stuff about yourself..">
+                                        <input class="form-control" type="text" name="userInfo"
+                                               placeholder="Enter some cool stuff about yourself..">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -173,33 +198,34 @@
                         </div>
                         <div class="tab-pane" id="friends">
                             <div style="" class="row">
-                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">Friends</h5>
+                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">
+                                    Friends</h5>
                                 <div style="text-align: left;" class="col-md-12">
                                     <h6>Friends</h6>
                                     <p>Friends</p>
+
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="requests">
                             <div style="" class="row">
-                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">Requests</h5>
+                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">
+                                    Requests</h5>
                                 <div style="text-align: left;" class="col-md-12">
                                     <h6>Requests</h6>
                                     <p>Requests</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-
-</script>
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
