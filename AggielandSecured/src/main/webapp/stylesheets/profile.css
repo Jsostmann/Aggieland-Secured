@@ -16,12 +16,6 @@ body{
     border: none;
 }
 
-#offcanvasRightLabel{
-    color:orange;
-}
-.offcanvas-header {
-    background-color: lightgreen;
-}
 
 #firstRow > div.col-lg-8 > div > div > ul > li > a {
     width: auto;
@@ -31,6 +25,12 @@ body{
 .btn .badge {
     margin-left: 10px;
     top: -2px;
+}
+
+a.btn.btn-success.list, a.btn.btn-danger.list {
+    width:60px;
+    padding: 5px;
+    margin-left: 5px;
 }
 
 .customButton:hover {

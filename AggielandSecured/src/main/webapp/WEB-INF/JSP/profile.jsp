@@ -85,6 +85,7 @@
                             <a href="javascript:" data-target="#edit" data-toggle="pill" class="nav-link"><i
                                     class="icon-note"></i> <span class="hidden-xs">Edit</span></a>
                         </li>
+
                         <li class="nav-item">
                             <a data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight2"
                                aria-controls="offcanvasRight" class="btn nav-link">Friends</a>
@@ -125,9 +126,10 @@
 
                         <li class="nav-item">
                             <a data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight"
-                               aria-controls="offcanvasRight" class="btn nav-link">Requests<span
-                                    data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight"
-                                    aria-controls="offcanvasRight" class="badge bg-primary">3</span>
+                               aria-controls="offcanvasRight" class="btn nav-link">Requests
+                                <c:if test="${requestScope.pendingFriends != null && requestScope.pendingFriends.size() != 0}">
+                                    <span data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" class="badge bg-primary">${requestScope.pendingFriends.size()}</span>
+                                </c:if>
                             </a>
                             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
                                  aria-labelledby="offcanvasRightLabel">
@@ -137,51 +139,27 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
+                                    <c:if test="${requestScope.pendingFriends != null && requestScope.pendingFriends.size() == 0}">
+                                        <h1>No new Requests</h1>
+                                    </c:if>
                                     <div class="row row-cols-1 row-cols-md-2 g-4">
-                                        <div class="col">
-                                            <div class="card h-100">
-                                                <img src="..." class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Card title</h5>
-                                                    <p class="card-text">This is a longer card with supporting text
-                                                        below as a natural lead-in to additional content. This content
-                                                        is a little bit longer.</p>
+                                        <c:forEach items="${requestScope.pendingFriends}" var="pendingFriend">
+                                            <div class="col">
+                                                <div class="card border-success friend-card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${pendingFriend.userName}</h5>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                            <div class="btn-group btn-group-sm" role="group"
+                                                                 aria-label="First group">
+                                                                <a href="/AggielandSecured/profile?from-list=${pendingFriend.userName}&action=1" class="btn btn-success list">Accept</a>
+                                                                <a href="/AggielandSecured/profile?from-list=${pendingFriend.userName}&action=0" class="btn btn-danger list">Decline</a>
+                                                            </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="card h-100">
-                                                <img src="..." class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Card title</h5>
-                                                    <p class="card-text">This is a short card.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="card h-100">
-                                                <img src="..." class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Card title</h5>
-                                                    <p class="card-text">This is a longer card with supporting text
-                                                        below as a natural lead-in to additional content.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="card h-100">
-                                                <img src="..." class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Card title</h5>
-                                                    <p class="card-text">This is a longer card with supporting text
-                                                        below as a natural lead-in to additional content. This content
-                                                        is a little bit longer.</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </c:forEach>
                                     </div>
-                                    <h1>Jalen Moore</h1>
-                                    <h1>Donald Battle</h1>
                                 </div>
                             </div>
                         </li>

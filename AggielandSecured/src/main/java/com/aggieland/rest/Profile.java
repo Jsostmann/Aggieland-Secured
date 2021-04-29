@@ -1,5 +1,8 @@
 package com.aggieland.rest;
 
+
+import com.aggieland.database.DatabaseDAO;
+>>>>>>> finished list notifications
 import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
 import javax.servlet.RequestDispatcher;
@@ -36,10 +39,14 @@ public class Profile extends AggielandSecuredServlet{
 
             User me = (User)session.getAttribute("user");
             ArrayList<User> friends = null;
-            
+
+            ArrayList<User> pendingFriends = null;
+
+>>>>>>> finished list notifications
             if(me != null) {
                 try {
                     friends = userDAO.getFriends(me.getUserId());
+                    pendingFriends = userDAO.getPendingFriends(me.getUserId());
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -47,6 +54,7 @@ public class Profile extends AggielandSecuredServlet{
             }
 
             request.setAttribute("friends",friends);
+            request.setAttribute("pendingFriends",pendingFriends);
             rs.include(request, response);
 
         } else {
@@ -77,17 +85,56 @@ public class Profile extends AggielandSecuredServlet{
     }
 
     protected void deleteUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
+
             User searchedUser = userDAO.getUser(request.getParameter("from-list"));
+
             User me = (User) request.getSession().getAttribute("user");
-            userDAO.removeFriend(searchedUser.getUserId(),me.getUserId());
+
+            long friendSignifier = userDAO.areFriends(searchedUser.getUserId(),me.getUserId());
+
+            if(friendSignifier == DatabaseDAO.IS_FRIEND) {
+              userDAO.removeFriend(searchedUser.getUserId(),me.getUserId());
+
+            }
+
+
+            if(request.getParameter("action" ) != null) {
+
+                int action = Integer.parseInt(request.getParameter("action"));
+
+                if(friendSignifier == DatabaseDAO.PENDING_FRIEND && action == 0){
+                    userDAO.removeFriend(searchedUser.getUserId(),me.getUserId());
+
+                } else {
+                    userDAO.updateFriendStatus(searchedUser.getUserId(),me.getUserId(),1);
+                }
+            }
+
+
             response.sendRedirect("profile");
 
-        } catch (SQLException e) {
-            RequestDispatcher rs = request.getRequestDispatcher("html/500.html");
-            rs.include(request, response);
-            e.printStackTrace();
-        }
+        } catch (Exception e) {
 
+          if(e instanceof SQLException) {
+            SQLException error = (SQLException) e;
+            error.printStackTrace();
+
+          }else if(e instanceof NullPointerException) {
+            NullPointerException error = (NullPointerException) e;
+            error.printStackTrace();
+
+          } else if(e instanceof NumberFormatException) {
+              NumberFormatException error = (NumberFormatException) e;
+              error.printStackTrace();
+
+          } else {
+            e.printStackTrace();
+          }
+
+          RequestDispatcher rs = request.getRequestDispatcher("html/500.html");
+          rs.include(request, response);
+        }
     }
 }

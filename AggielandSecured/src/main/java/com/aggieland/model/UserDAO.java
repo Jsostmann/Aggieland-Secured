@@ -185,7 +185,6 @@ public class UserDAO extends BasicDAO {
 
     statement.setLong(1, userID);
     statement.setLong(2, userID);
-    statement.setLong(3,userID);
 
     ResultSet results = statement.executeQuery();
 
@@ -196,7 +195,42 @@ public class UserDAO extends BasicDAO {
       if (results.getLong(4) == DatabaseDAO.IS_FRIEND) {
 
         User currentFriend = getUser(friendID);
-        System.out.println(currentFriend.getUserName());
+
+        if (currentFriend != null) {
+          friends.add(currentFriend);
+        }
+      }
+
+    }
+
+    disconnect();
+
+    return friends;
+
+  }
+
+  public ArrayList<User> getPendingFriends(long userID) throws SQLException, IOException {
+
+    ArrayList<User> friends = new ArrayList<>();
+
+    connect();
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.GET_PENDING_FRIENDS_QUERY);
+
+    statement.setLong(1, userID);
+    statement.setLong(2, userID);
+
+    ResultSet results = statement.executeQuery();
+
+    while (results.next()) {
+
+      long friendID = results.getLong(1) != userID ? results.getLong(1) : results.getLong(2);
+
+      boolean notLastActive = results.getLong(4) == DatabaseDAO.PENDING_FRIEND && results.getLong(3) != userID;
+
+      if (notLastActive) {
+
+        User currentFriend = getUser(friendID);
 
         if (currentFriend != null) {
           friends.add(currentFriend);
@@ -242,7 +276,6 @@ public class UserDAO extends BasicDAO {
   }
 
   public boolean removeFriend(long userID, long myID) throws SQLException {
-
     connect();
 
     PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.DELETE_FRIEND_QUERY);
@@ -264,9 +297,11 @@ public class UserDAO extends BasicDAO {
 
     PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_FRIEND_QUERY);
 
-    statement.setLong(1, Long.min(userID, myID));
-    statement.setLong(2, Long.max(userID, myID));
-    statement.setLong(3, status);
+    statement.setLong(1, status);
+    statement.setLong(2, myID);
+    statement.setLong(3, Long.min(userID, myID));
+    statement.setLong(4, Long.max(userID, myID));
+
 
     boolean result = statement.executeUpdate() > 0;
 
