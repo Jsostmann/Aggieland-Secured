@@ -10,9 +10,7 @@ import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-
 public class UserProfile extends AggielandSecuredServlet {
-
   private static final Logger LOG = Logger.getLogger(UserProfile.class.getName());
   private UserDAO userDAO;
 
