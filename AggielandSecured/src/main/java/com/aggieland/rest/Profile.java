@@ -2,7 +2,6 @@ package com.aggieland.rest;
 
 
 import com.aggieland.database.DatabaseDAO;
->>>>>>> finished list notifications
 import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
 import javax.servlet.RequestDispatcher;
