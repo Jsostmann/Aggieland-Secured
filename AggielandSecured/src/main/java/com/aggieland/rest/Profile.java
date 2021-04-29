@@ -1,6 +1,5 @@
 package com.aggieland.rest;
 
-
 import com.aggieland.database.DatabaseDAO;
 import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
