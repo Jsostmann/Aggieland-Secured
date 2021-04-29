@@ -41,7 +41,6 @@ public class Profile extends AggielandSecuredServlet{
 
             ArrayList<User> pendingFriends = null;
 
->>>>>>> finished list notifications
             if(me != null) {
                 try {
                     friends = userDAO.getFriends(me.getUserId());
