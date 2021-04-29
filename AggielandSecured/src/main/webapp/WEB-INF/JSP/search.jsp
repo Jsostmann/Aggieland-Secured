@@ -124,9 +124,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/3.0.4/choices.js"
-        integrity="sha512-+0WJVCnJZNbPi3oqDYOFig6jvU6mlQsIvnsZ6/pK6G9/WwaBqxxrgldnPFWeRX4EX0HL8yHqD22EPQrsuMdwjw=="
-        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/3.0.4/choices.js"></script>
 <script src="/AggielandSecured/javascript/search.js"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

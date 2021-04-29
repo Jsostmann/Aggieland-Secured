@@ -30,15 +30,17 @@ public class UserProfile extends AggielandSecuredServlet {
     if(a != null && !a.isNew()) {
 
       LOG.info("Session is good, continue");
+
+      System.out.println(request.getQueryString());
+
       String searchedUserName = request.getPathInfo().replace("/","");
+
       RequestDispatcher rs;
 
       try {
 
         User searchedUser = userDAO.getUser(searchedUserName);
         User me = (User) a.getAttribute("user");
-
-        //ArrayList<User> friends = userDAO.getFriends(me.getUserId());
 
         long friendSignifier = userDAO.areFriends(searchedUser.getUserId(),me.getUserId());
 

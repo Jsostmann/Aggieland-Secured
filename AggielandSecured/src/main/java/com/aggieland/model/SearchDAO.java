@@ -21,7 +21,7 @@ public class SearchDAO extends BasicDAO {
     String major = request.getParameter("major");
     String classification = request.getParameter("classification");
     String userName = request.getParameter("username");
-    String searchValue = request.getParameter("search");
+    String searchValue = request.getParameter("search").trim();
 
     connect();
 

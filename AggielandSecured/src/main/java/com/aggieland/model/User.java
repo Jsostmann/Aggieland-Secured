@@ -209,10 +209,10 @@ public class User {
     public static User createUser(HttpServletRequest request) {
         User newUser = new User();
 
-        newUser.setFirstName(request.getParameter("firstName"));
-        newUser.setLastName(request.getParameter("lastName"));
-        newUser.setUserName(request.getParameter("userName"));
-        newUser.setEmail(request.getParameter("email"));
+        newUser.setFirstName(request.getParameter("firstName").trim());
+        newUser.setLastName(request.getParameter("lastName").trim());
+        newUser.setUserName(request.getParameter("userName").trim());
+        newUser.setEmail(request.getParameter("email").trim());
 
         // get current formatted date
         Date date = Date.valueOf(LocalDate.now());

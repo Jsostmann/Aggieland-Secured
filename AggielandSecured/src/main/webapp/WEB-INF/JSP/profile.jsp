@@ -86,27 +86,107 @@
                                     class="icon-note"></i> <span class="hidden-xs">Edit</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:" data-target="#friends" data-toggle="pill" class="nav-link"><i
-                                    class="icon-note"></i> <span class="hidden-xs">Friends</span></a>
+                            <a data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight2"
+                               aria-controls="offcanvasRight" class="btn nav-link">Friends</a>
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2"
+                                 aria-labelledby="offcanvasRightLabel">
+                                <div class="offcanvas-header">
+                                    <h5 id="offcanvasRightLabel2">Friends</h5>
+                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <c:if test="${requestScope.friends != null && requestScope.friends.size() == 0}">
+                                        <h1>No Friends yet :(</h1>
+                                    </c:if>
+                                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                                        <c:forEach items="${requestScope.friends}" var="friend">
+                                            <div class="col">
+                                                <div class="card border-success friend-card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${friend.userName}</h5>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="btn-toolbar justify-content-between" role="toolbar"
+                                                             aria-label="Toolbar with button groups">
+                                                            <div class="btn-group" role="group"
+                                                                 aria-label="First group">
+                                                                <a href="/AggielandSecured/profile?from-list=${friend.userName}" class="nav-link">Remove Friend</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="offcanvas"
-                               data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" class="nav-link"><i
-                                    class="icon-note"></i> <span class="hidden-xs">Requests</span></a>
 
+                        <li class="nav-item">
+                            <a data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight"
+                               aria-controls="offcanvasRight" class="btn nav-link">Requests<span
+                                    data-bs-toggle="offcanvas" type="button" data-bs-target="#offcanvasRight"
+                                    aria-controls="offcanvasRight" class="badge bg-primary">3</span>
+                            </a>
                             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
                                  aria-labelledby="offcanvasRightLabel">
                                 <div class="offcanvas-header">
-                                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-                                    <button type="button" class="btn-close text-reset"
-                                            data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    <h5 id="offcanvasRightLabel">Requests</h5>
+                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
-                                    ...
+                                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <img src="..." class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Card title</h5>
+                                                    <p class="card-text">This is a longer card with supporting text
+                                                        below as a natural lead-in to additional content. This content
+                                                        is a little bit longer.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <img src="..." class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Card title</h5>
+                                                    <p class="card-text">This is a short card.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <img src="..." class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Card title</h5>
+                                                    <p class="card-text">This is a longer card with supporting text
+                                                        below as a natural lead-in to additional content.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <img src="..." class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Card title</h5>
+                                                    <p class="card-text">This is a longer card with supporting text
+                                                        below as a natural lead-in to additional content. This content
+                                                        is a little bit longer.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h1>Jalen Moore</h1>
+                                    <h1>Donald Battle</h1>
                                 </div>
                             </div>
                         </li>
                     </ul>
+
                     <div style="margin-top: 89px;" class="tab-content p-3">
                         <div class="tab-pane active show" id="profile">
                             <div style="" class="row">
@@ -196,27 +276,6 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="tab-pane" id="friends">
-                            <div style="" class="row">
-                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">
-                                    Friends</h5>
-                                <div style="text-align: left;" class="col-md-12">
-                                    <h6>Friends</h6>
-                                    <p>Friends</p>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="requests">
-                            <div style="" class="row">
-                                <h5 style="text-align: center; margin-bottom: 3px; width: 100%; " class="mb-3">
-                                    Requests</h5>
-                                <div style="text-align: left;" class="col-md-12">
-                                    <h6>Requests</h6>
-                                    <p>Requests</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -224,8 +283,8 @@
         </div>
     </div>
 </div>
-        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

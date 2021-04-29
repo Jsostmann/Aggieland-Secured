@@ -87,7 +87,7 @@ public class UserDAO extends BasicDAO {
 
     PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.ADD_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
 
-    String password = request.getParameter("password");
+    String password = request.getParameter("password").trim();
 
     String salt = AuthoizationUtil.generateSalt();
     StringBuilder saltedPassword = new StringBuilder(50);
@@ -177,7 +177,7 @@ public class UserDAO extends BasicDAO {
 
   public ArrayList<User> getFriends(long userID) throws SQLException, IOException {
 
-    ArrayList<User> friends = new ArrayList<User>();
+    ArrayList<User> friends = new ArrayList<>();
 
     connect();
 
@@ -185,6 +185,7 @@ public class UserDAO extends BasicDAO {
 
     statement.setLong(1, userID);
     statement.setLong(2, userID);
+    statement.setLong(3,userID);
 
     ResultSet results = statement.executeQuery();
 
@@ -195,6 +196,7 @@ public class UserDAO extends BasicDAO {
       if (results.getLong(4) == DatabaseDAO.IS_FRIEND) {
 
         User currentFriend = getUser(friendID);
+        System.out.println(currentFriend.getUserName());
 
         if (currentFriend != null) {
           friends.add(currentFriend);
@@ -204,6 +206,7 @@ public class UserDAO extends BasicDAO {
     }
 
     disconnect();
+
     return friends;
 
   }
@@ -259,7 +262,7 @@ public class UserDAO extends BasicDAO {
 
     connect();
 
-    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_USER_QUERY);
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_FRIEND_QUERY);
 
     statement.setLong(1, Long.min(userID, myID));
     statement.setLong(2, Long.max(userID, myID));

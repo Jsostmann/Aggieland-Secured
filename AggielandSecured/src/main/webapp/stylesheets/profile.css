@@ -16,6 +16,23 @@ body{
     border: none;
 }
 
+#offcanvasRightLabel{
+    color:orange;
+}
+.offcanvas-header {
+    background-color: lightgreen;
+}
+
+#firstRow > div.col-lg-8 > div > div > ul > li > a {
+    width: auto;
+    text-align: center;
+}
+
+.btn .badge {
+    margin-left: 10px;
+    top: -2px;
+}
+
 .customButton:hover {
     background-color: #ffc107;
 }
@@ -57,6 +74,11 @@ a.nav-link.active.show {
 .card {
     background-color: #ffc107;
 }
+
+div.card.border-success.friend-card {
+    background-color: white;
+}
+
 
 #firstRow > div.col-lg-4 > div > div > div.card-body.text-center.bg-primary.rounded-top {
     background-color: #002d74 !important;
