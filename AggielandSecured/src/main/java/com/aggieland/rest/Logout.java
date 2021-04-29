@@ -1,11 +1,8 @@
 package com.aggieland.rest;
 
-
 import java.io.*;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 
 public class Logout extends AggielandSecuredServlet {
 
@@ -16,10 +13,7 @@ public class Logout extends AggielandSecuredServlet {
       session.removeAttribute("user");
       session.invalidate();
     }
-
     response.sendRedirect("signin");
-
-
   }
-
+  
 }
