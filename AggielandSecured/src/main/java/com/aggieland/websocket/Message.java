@@ -1,6 +1,8 @@
 package com.aggieland.websocket;
 
-
+/**
+ * Class to represent Messages
+ */
 public class Message {
 
   private MessageType messageType;

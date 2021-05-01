@@ -6,11 +6,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Class to Represent our Servlet with a reference to
+ * our database connection URL, user, and password
+ */
+
 abstract class AggielandSecuredServlet extends HttpServlet {
   private String databaseConnectionURL;
   private String databaseUsername;
   private String databasePassword;
 
+  /**
+   * Called when Servlet is created
+   * @throws ServletException
+   */
   @Override
   public void init() throws ServletException {
     databaseConnectionURL = getServletContext().getInitParameter("databaseURL");

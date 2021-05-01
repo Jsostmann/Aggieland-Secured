@@ -2,12 +2,13 @@ package com.aggieland.auth;
 
 import com.google.common.hash.Hashing;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
+/**
+ * This is the class that handles all of our hashing and salting of passwords
+ */
 public class AuthoizationUtil {
-
     private static final Logger LOG = Logger.getLogger(AuthoizationUtil.class.getName());
 
     public static String hashSaltedPassword(String saltedPassword, String salt) {
@@ -21,12 +22,6 @@ public class AuthoizationUtil {
     public static String generateSalt() {
         return BCrypt.gensalt(5);
     }
-
-
-
-
-
-
 
     public static String hashEncrypt(String plainText) {
         return Hashing.sha512().hashString(plainText, StandardCharsets.UTF_8).toString();

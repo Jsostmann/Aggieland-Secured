@@ -13,7 +13,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
 
-
+/**
+ * This is the POJO class to represent our user
+ */
 public class User {
 
     private long userId;
@@ -143,6 +145,12 @@ public class User {
         this.classification = classification;
     }
 
+    /**
+     * Converts inputstream to String64 of and image
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     private static String convertImage(InputStream inputStream) throws IOException {
         String result;
 
@@ -165,7 +173,13 @@ public class User {
 
     }
 
-
+    /**
+     * Creates a new user from a result set
+     * @param result
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public static User createUser(ResultSet result) throws SQLException, IOException {
 
         User newUser = new User();
@@ -190,6 +204,12 @@ public class User {
         return newUser;
     }
 
+    /**
+     * Same as above but with less information
+     * @param result
+     * @return
+     * @throws SQLException
+     */
     public static User createUserFromSearch(ResultSet result) throws SQLException {
 
         User newUser = new User();
@@ -206,6 +226,11 @@ public class User {
     }
 
 
+    /**
+     * Creates a new user
+     * @param request
+     * @return
+     */
     public static User createUser(HttpServletRequest request) {
         User newUser = new User();
 
@@ -224,6 +249,12 @@ public class User {
 
     }
 
+    /**
+     * updates user
+     * @param request
+     * @throws IOException
+     * @throws ServletException
+     */
     public static void updateUser(HttpServletRequest request) throws IOException, ServletException {
 
         User currentUser = (User)request.getSession(false).getAttribute("user");
@@ -233,7 +264,6 @@ public class User {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
         Part filePart = request.getPart("profilePicture");
         String userInfo = request.getParameter("userInfo");
         String major = request.getParameter("major");
@@ -247,16 +277,12 @@ public class User {
         if(!email.isEmpty()) {
             currentUser.setEmail(email);
         }
-        if(!password.isEmpty()) {
-            // password update
-        }
         if(!userInfo.isEmpty()) {
             currentUser.setUserInfo(userInfo);
         }
         if(!major.isEmpty()) {
             currentUser.setMajor(major);
         }
-
         if(filePart != null && filePart.getSize() > 0) {
             inputStream = filePart.getInputStream();
             String image = convertImage(inputStream);

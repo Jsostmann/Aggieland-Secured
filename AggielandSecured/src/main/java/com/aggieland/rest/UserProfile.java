@@ -5,11 +5,13 @@ import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
 import java.io.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+/**
+ * Manages Other User Profiles other than the person signed in
+ */
 public class UserProfile extends AggielandSecuredServlet {
   private static final Logger LOG = Logger.getLogger(UserProfile.class.getName());
   private UserDAO userDAO;
@@ -21,6 +23,13 @@ public class UserProfile extends AggielandSecuredServlet {
     userDAO = new UserDAO(getDatabaseConnectionURL(),getDatabaseUsername(),getDatabasePassword());
   }
 
+  /**
+   * Processes our request and determines the friend status of that user
+   * @param request
+   * @param response
+   * @throws ServletException
+   * @throws IOException
+   */
   private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     HttpSession a = request.getSession(false);
@@ -29,16 +38,13 @@ public class UserProfile extends AggielandSecuredServlet {
 
       LOG.info("Session is good, continue");
 
-      System.out.println(request.getQueryString());
-
       String searchedUserName = request.getPathInfo().replace("/","");
 
       RequestDispatcher rs;
 
       try {
-
         User searchedUser = userDAO.getUser(searchedUserName);
-        User me = (User) a.getAttribute("user");
+        User me = (User)a.getAttribute("user");
 
         long friendSignifier = userDAO.areFriends(searchedUser.getUserId(),me.getUserId());
 
@@ -78,6 +84,13 @@ public class UserProfile extends AggielandSecuredServlet {
 
   }
 
+  /**
+   * handles the update of a friend or deletes them
+   * @param request
+   * @param response
+   * @throws ServletException
+   * @throws IOException
+   */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     HttpSession a = request.getSession(false);

@@ -2,7 +2,6 @@ package com.aggieland.rest;
 
 import com.aggieland.model.SearchDAO;
 import com.aggieland.model.User;
-import com.aggieland.model.UserDAO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * This Class handles all of the user searches that you can make
+ */
 public class Search extends AggielandSecuredServlet {
   SearchDAO searchDAO;
   private static final Logger LOG = Logger.getLogger(Search.class.getName());

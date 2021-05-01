@@ -2,16 +2,16 @@ package com.aggieland.database;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-
+/**
+ * Class for testing Database
+ */
 public class DatabaseTest {
 
   String[] testCases = {"Apple","apple","aPPle","  apple","apple  ",""};
@@ -30,7 +30,7 @@ public class DatabaseTest {
   @Test
   public void testDate() throws SQLException {
     DatabaseDAO.connect();
-    PreparedStatement statement = DatabaseDAO.databaseConnection.prepareStatement(DatabaseDAO.test);
+    PreparedStatement statement = DatabaseDAO.databaseConnection.prepareStatement(DatabaseDAO.TEST_DATE_QUERY);
 
     ResultSet result = statement.executeQuery();
     if(result.next()) {

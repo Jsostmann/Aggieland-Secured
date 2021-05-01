@@ -13,6 +13,8 @@ $(document).ready(function(){
         $('.action_menu').toggle();
     });
 
+
+
     $('.input-group-append').click(function(){
         var input = $('#text').val();
         if (input != "") {
@@ -20,7 +22,7 @@ $(document).ready(function(){
             websocket.send(JSON.stringify(message));
             document.getElementById("text").value = "";
         } else {
-            alert("Nothing to send :(");
+            alert("Nothing to send :( ");
         }
 
     });
@@ -70,13 +72,13 @@ function initWebsocket() {
     }
 
 }
-
+// Gets current Time
 function formatAMPM(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours ? hours : 12;
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
@@ -90,6 +92,14 @@ function addNewUser(name) {
         name + '</span> <p></p> </div></div></li>');
 
     contacts.append(outer);
+
+
+    $('li').bind('click', function() {
+        // remove the active class from all elements with active class
+        $('.active').removeClass('active')
+        // add active class to clicked element
+        $(this).addClass('active');
+    });
 }
 
 function addMessage(message) {
@@ -117,3 +127,5 @@ function addMessage(message) {
 
 
 }
+
+

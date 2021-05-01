@@ -1,5 +1,8 @@
 package com.aggieland.database;
 
+/**
+ * Various keywords for database queries
+ */
 public enum DatabaseEnums {
 
   SELECT("SELECT"),

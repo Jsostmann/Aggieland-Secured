@@ -8,7 +8,11 @@
     <!--Config Values-->
     <context-param>
         <param-name>databaseURL</param-name>
-        <param-value>jdbc:mysql://localhost:8002/aggielandsql</param-value>
+        <!--FOR RUNNING FROM LOCALHOST-->
+        <!--<param-value>jdbc:mysql://localhost:3306/aggielandsql</param-value>-->
+
+        <!--FOR RUNNING FROM DOCKER-->
+        <param-value>jdbc:mysql://database:3306/aggielandsql</param-value>
     </context-param>
     <context-param>
         <param-name>databaseUsername</param-name>

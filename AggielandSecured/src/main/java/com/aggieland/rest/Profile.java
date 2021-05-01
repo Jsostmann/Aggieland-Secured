@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * This class does the majority of the handling for our profile page
+ */
 public class Profile extends AggielandSecuredServlet{
     UserDAO userDAO;
     private static final Logger LOG = Logger.getLogger(Profile.class.getName());
@@ -64,16 +67,13 @@ public class Profile extends AggielandSecuredServlet{
         HttpSession session = request.getSession(false);
 
         if(session != null && !session.isNew()) {
-
             try {
                 userDAO.updateAccount(request);
-                
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             
             doGet(request,response);
-            //response.sendRedirect("profile");
 
         } else {
             LOG.info("Bad session redirecting to login");
@@ -81,6 +81,13 @@ public class Profile extends AggielandSecuredServlet{
         }
     }
 
+    /**
+     * This function removes/accepts stale friend requests and allows you to delete friends
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void deleteUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
@@ -93,9 +100,7 @@ public class Profile extends AggielandSecuredServlet{
 
             if(friendSignifier == DatabaseDAO.IS_FRIEND) {
               userDAO.removeFriend(searchedUser.getUserId(),me.getUserId());
-
             }
-
 
             if(request.getParameter("action" ) != null) {
 
@@ -108,7 +113,6 @@ public class Profile extends AggielandSecuredServlet{
                     userDAO.updateFriendStatus(searchedUser.getUserId(),me.getUserId(),1);
                 }
             }
-
 
             response.sendRedirect("profile");
 

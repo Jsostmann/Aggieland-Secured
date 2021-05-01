@@ -2,16 +2,21 @@ package com.aggieland.rest;
 
 import com.aggieland.model.User;
 import com.aggieland.model.UserDAO;
-import sun.misc.Request;
 import java.io.*;
 import java.sql.SQLException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+/**
+ * Class handles the Authentication and Authorization to the website and checks
+ * to see if a valid session already exists thus sending them to the profile page
+ */
 public class Signin extends AggielandSecuredServlet {
     UserDAO userDAO;
     private static final Logger LOG = Logger.getLogger(Signin.class.getName());
+    public static final ConcurrentHashMap<String,HttpSession> activeUsers = new ConcurrentHashMap<>();
 
   @Override
     public void init() throws ServletException {
@@ -41,8 +46,8 @@ public class Signin extends AggielandSecuredServlet {
             if(successfulLogin) {
                 LOG.info("Successful login, Creating new session");
                 User user = userDAO.getUser(request.getParameter("userName"));
-
                 HttpSession session = request.getSession(true);
+                activeUsers.put(user.getUserName(),session);
                 session.setMaxInactiveInterval(600);
                 session.setAttribute("user",user);
                 response.sendRedirect("profile");
@@ -58,17 +63,5 @@ public class Signin extends AggielandSecuredServlet {
             serverResponse.forward(request,response);
         }
 
-    }
-    
-    private boolean signInUser(HttpServletRequest request) throws SQLException, IOException {
-        String userName = request.getParameter("userName");
-        String password = request.getParameter("password");
-        User user = null; 
-
-        if(userDAO.verifiedUser(userName,password)) {
-            user = userDAO.getUser(userName);
-            request.getSession().setAttribute("user",user);
-        }
-        return user != null;
     }
 }

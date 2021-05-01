@@ -1038,12 +1038,12 @@ legend {
     -ms-flex-align: center;
     align-items: center;
     width: 110px;
-    color: #999;
+    color:#e6ad2f;
     font-size: 14px;
 }
 
 .s010 form .inner-form .advance-search .row.third .input-field .result-count span {
-    color: #333;
+    color: white;
     padding-right: 5px;
 }
 

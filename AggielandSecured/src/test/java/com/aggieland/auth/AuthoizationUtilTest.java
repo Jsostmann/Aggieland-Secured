@@ -2,10 +2,12 @@ package com.aggieland.auth;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 
+/**
+ * Class for testing our Authorization hashing and salting
+ */
 public class AuthoizationUtilTest {
 
     String[] testCases = {"Apple","apple","aPPle","  apple","apple  ",""};

@@ -51,6 +51,7 @@
                             </select>
                         </div>
                     </div>
+                    <%--
                     <div class="input-field">
                         <div class="input-select">
                             <select class="dont-sort" data-trigger="" name="classification">
@@ -62,6 +63,7 @@
                             </select>
                         </div>
                     </div>
+                    --%>
                     <div class="checkbox">
                         <span id="t">User Name</span>
                         <div class="btn-group" data-toggle="buttons">
@@ -108,7 +110,7 @@
                             <br/>
                             <i class="fa fa-graduation-cap"></i> ${user.major}
                             <br/>
-                            <i class="fa fa-calculator"></i> ${user.classification}
+                            <%--<i class="fa fa-calculator"></i> ${user.classification}--%>
                         </p>
                     </div>
                 </div>

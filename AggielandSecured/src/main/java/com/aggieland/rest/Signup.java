@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-
+/**
+ * Class handles the creation of new users and sends them to the Profile servlet
+ */
 public class Signup extends AggielandSecuredServlet{
 
     UserDAO userDAO;
@@ -22,26 +24,27 @@ public class Signup extends AggielandSecuredServlet{
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         response.setContentType("text/html");
         RequestDispatcher rs = request.getRequestDispatcher("html/Signup.html");
         rs.include(request, response);
-
     }
 
+    /**
+     * Handles the Session creation and new user creation
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher serverResponse;
         try {
-
-            //boolean success = signUpNewUser(request);
              User user = userDAO.addUser(request);
-
              boolean success = user != null;
 
             if (success) {
                 LOG.info("user sucessfully signed up, proceed to profile");
                 request.getSession().setAttribute("user",user);
-                System.out.println(user);
                 response.sendRedirect("/AggielandSecured/profile");
 
             } else {
@@ -50,25 +53,9 @@ public class Signup extends AggielandSecuredServlet{
             }
 
         } catch (SQLException throwables) {
-
             throwables.printStackTrace();
             serverResponse = request.getRequestDispatcher("html/500.html");
             serverResponse.forward(request,response);
         }
-    }
-
-    private boolean signUpNewUser(HttpServletRequest request) throws SQLException, IOException {
-
-        String password = request.getParameter("password");
-
-        User addedUser = User.createUser(request);
-
-        if (userDAO.userExists(addedUser.getUserName())) {
-            return false;
-        }
-
-        //request.getSession().setAttribute("user",addedUser);
-        return false;
-        //return userDAO.addUser(addedUser, password);
     }
 }

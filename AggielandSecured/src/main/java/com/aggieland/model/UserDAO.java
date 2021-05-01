@@ -2,23 +2,30 @@ package com.aggieland.model;
 
 import com.aggieland.auth.AuthoizationUtil;
 import com.aggieland.database.DatabaseDAO;
-
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
-
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
+/**
+ * Class for all of our user CRUD operations to the database
+ */
 public class UserDAO extends BasicDAO {
+  private static final Logger LOG = Logger.getLogger(UserDAO.class.getName());
 
   public UserDAO(String databaseConnectionURL, String databaseUsername, String databasePassword) {
     super(databaseConnectionURL, databaseUsername, databasePassword);
   }
 
-
+  /**
+   * Verifys user is real
+   * @param userName
+   * @param password
+   * @return
+   * @throws SQLException
+   */
   public boolean verifiedUser(String userName, String password) throws SQLException {
 
     boolean isVerified = false;
@@ -58,6 +65,13 @@ public class UserDAO extends BasicDAO {
 
   }
 
+  /**
+   * Returns user from database
+   * @param userName
+   * @return
+   * @throws SQLException
+   * @throws IOException
+   */
   public User getUser(String userName) throws SQLException, IOException {
 
     User foundUser = null;
@@ -79,6 +93,12 @@ public class UserDAO extends BasicDAO {
     return foundUser;
   }
 
+  /**
+   * Adds new user to database
+   * @param request
+   * @return
+   * @throws SQLException
+   */
   public User addUser(HttpServletRequest request) throws SQLException {
 
     connect();
@@ -124,33 +144,70 @@ public class UserDAO extends BasicDAO {
     return userAdded ? user : null;
   }
 
+  /**
+   * Updates old user
+   * @param request
+   * @return
+   * @throws SQLException
+   * @throws IOException
+   * @throws ServletException
+   */
   public User updateAccount(HttpServletRequest request) throws SQLException, IOException, ServletException {
     User updatedUser = null;
-
-    Part filePart = request.getPart("profilePicture");
 
     User.updateUser(request);
 
     connect();
 
-    PreparedStatement statement = getDatabaseConnection().prepareStatement(DatabaseDAO.UPDATE_USER_QUERY);
+    String updateQuery;
+    String hashedPassword = null;
+    String salt = null;
+
+    String password = request.getParameter("password").trim();
+
+    if(!password.isEmpty()) {
+
+      updateQuery = DatabaseDAO.UPDATE_USER_PASSWORD_QUERY;
+      salt = AuthoizationUtil.generateSalt();
+      StringBuilder saltedPassword = new StringBuilder(50);
+      saltedPassword.append(password);
+      saltedPassword.append(salt);
+      hashedPassword = AuthoizationUtil.hashSaltedPassword(saltedPassword.toString(), salt);
+
+    }else {
+      updateQuery = DatabaseDAO.UPDATE_USER_QUERY;
+    }
+
+    PreparedStatement statement = getDatabaseConnection().prepareStatement(updateQuery);
 
     updatedUser = (User) request.getSession(false).getAttribute("user");
 
-    statement.setString(1, updatedUser.getFirstName());
-    statement.setString(2, updatedUser.getLastName());
-    statement.setString(3, updatedUser.getEmail());
-    statement.setString(4, updatedUser.getProfilePictureBase64());
-    statement.setString(5, updatedUser.getUserInfo());
-    statement.setString(6, updatedUser.getMajor());
-    statement.setLong(7, updatedUser.getUserId());
+    int parameter = 1;
+
+    statement.setString(parameter++, updatedUser.getFirstName());
+    statement.setString(parameter++, updatedUser.getLastName());
+    statement.setString(parameter++, updatedUser.getEmail());
+
+    if(!password.isEmpty()) {
+      statement.setString(parameter++, hashedPassword);
+      statement.setString(parameter++, salt);
+
+    } else {
+      parameter = 4;
+    }
+
+    statement.setString(parameter++, updatedUser.getProfilePictureBase64());
+    statement.setString(parameter++, updatedUser.getUserInfo());
+    statement.setString(parameter++, updatedUser.getMajor());
+    statement.setLong(parameter, updatedUser.getUserId());
 
     boolean userUpdated = statement.executeUpdate() > 0;
 
     if (userUpdated) {
-      System.out.println("user updated");
+      LOG.info("Succesfully updated user");
+
     } else {
-      System.out.println("error updating");
+      LOG.info("Failed to update user");
     }
 
     disconnect();
@@ -158,6 +215,13 @@ public class UserDAO extends BasicDAO {
     return updatedUser;
   }
 
+  /**
+   * Returns user based on ID
+   * @param userID
+   * @return
+   * @throws SQLException
+   * @throws IOException
+   */
   public User getUser(long userID) throws SQLException, IOException {
 
     User foundUser = null;
@@ -175,6 +239,13 @@ public class UserDAO extends BasicDAO {
     return foundUser;
   }
 
+  /**
+   * Gets friends of user based on ID
+   * @param userID
+   * @return
+   * @throws SQLException
+   * @throws IOException
+   */
   public ArrayList<User> getFriends(long userID) throws SQLException, IOException {
 
     ArrayList<User> friends = new ArrayList<>();
@@ -209,6 +280,13 @@ public class UserDAO extends BasicDAO {
 
   }
 
+  /**
+   * Gets friends with pending status based on ID
+   * @param userID
+   * @return
+   * @throws SQLException
+   * @throws IOException
+   */
   public ArrayList<User> getPendingFriends(long userID) throws SQLException, IOException {
 
     ArrayList<User> friends = new ArrayList<>();
@@ -245,6 +323,13 @@ public class UserDAO extends BasicDAO {
 
   }
 
+  /**
+   * Checks if 2 users are friends
+   * @param userID
+   * @param myID
+   * @return
+   * @throws SQLException
+   */
   public long areFriends(long userID, long myID) throws SQLException {
 
     long friendStatus = -1;
@@ -275,6 +360,13 @@ public class UserDAO extends BasicDAO {
     return friendStatus;
   }
 
+  /**
+   * Removes 2 friends
+   * @param userID
+   * @param myID
+   * @return
+   * @throws SQLException
+   */
   public boolean removeFriend(long userID, long myID) throws SQLException {
     connect();
 
@@ -291,6 +383,14 @@ public class UserDAO extends BasicDAO {
 
   }
 
+  /**
+   * Updates Friend Status
+   * @param userID
+   * @param myID
+   * @param status
+   * @return
+   * @throws SQLException
+   */
   public boolean updateFriendStatus(long userID, long myID, int status) throws SQLException {
 
     connect();
@@ -311,6 +411,13 @@ public class UserDAO extends BasicDAO {
 
   }
 
+  /**
+   * Adds a new friend
+   * @param userID
+   * @param myID
+   * @return
+   * @throws SQLException
+   */
   public boolean addFriend(long userID, long myID) throws SQLException {
     connect();
 
