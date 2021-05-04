@@ -34,6 +34,7 @@
             </div>
             <div class="card-body contacts_body">
                 <ui class="contacts">
+                    <%--
                     <li class="active">
                         <div class="d-flex bd-highlight">
                             <div class="img_cont">
@@ -82,6 +83,7 @@
                             </div>
                         </div>
                     </li>
+                    --%>
                 </ui>
             </div>
             <div class="card-footer"></div>
@@ -95,9 +97,9 @@
                             <span class="online_icon"></span>
                         </div>
                         <div class="user_info">
-                            <span>DEMO CHAT 2</span>
+                            <span id="a">Final Presentation</span>
                             <!--<span>Chat with Jalen</span>-->
-                            <p>5 Messages</p>
+                            <!--<p>5 Messages</p>-->
                         </div>
                         <%--
                         <div class="video_cam">

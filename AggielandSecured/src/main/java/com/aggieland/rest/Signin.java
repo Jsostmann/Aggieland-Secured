@@ -47,6 +47,8 @@ public class Signin extends AggielandSecuredServlet {
                 LOG.info("Successful login, Creating new session");
                 User user = userDAO.getUser(request.getParameter("userName"));
                 HttpSession session = request.getSession(true);
+                Cookie c = new Cookie("user",user.getUserName());
+                response.addCookie(c);
                 activeUsers.put(user.getUserName(),session);
                 session.setMaxInactiveInterval(600);
                 session.setAttribute("user",user);

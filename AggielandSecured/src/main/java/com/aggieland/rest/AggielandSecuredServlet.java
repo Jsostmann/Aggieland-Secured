@@ -22,19 +22,15 @@ abstract class AggielandSecuredServlet extends HttpServlet {
    */
   @Override
   public void init() throws ServletException {
-    databaseConnectionURL = getServletContext().getInitParameter("databaseURL");
-    databaseUsername = getServletContext().getInitParameter("databaseUsername");
-    databasePassword = getServletContext().getInitParameter("databasePassword");
 
     Properties props = new Properties();
-    InputStream input = getServletContext().getResourceAsStream("/WEB-INF/config.properties");
+    InputStream configuration = getServletContext().getResourceAsStream("/WEB-INF/config.properties");
 
     try {
-      props.load(input);
-      String url = props.getProperty("databaseURL");
-      String username = props.getProperty("databaseUsername");
-      String password = props.getProperty("databasePassword");
-
+      props.load(configuration);
+      this.databaseConnectionURL = props.getProperty("databaseURL");
+      this.databaseUsername = props.getProperty("databaseUsername");
+      this.databasePassword = props.getProperty("databasePassword");
     } catch (IOException e) {
       e.printStackTrace();
     }

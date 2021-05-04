@@ -8,7 +8,7 @@ body,html{
         */
 }
 
-.chat{
+.chat {
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -229,6 +229,50 @@ body,html{
     cursor: pointer;
     background-color: rgba(0,0,0,0.2);
 }
+
+.chatrooms-body{
+    padding:  0.75rem 0 !important;
+    overflow-y: auto;
+    white-space: nowrap;
+    margin:auto;
+}
+
+.chatrooms {
+    width: 100% !important;
+    padding: 5px 10px;
+    margin: auto !important;
+    margin-bottom: 15px !important;
+}
+
+.chatrooms li {
+    list-style: none;
+    padding: 0;
+}
+
+.chatroom-info {
+    margin:auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chatroom-info h4{
+    margin:auto;
+    color: white;
+}
+
+.chatroom-info button{
+    color: white;
+}
+
+.chatrooms div.col-12 {
+    padding: 0;
+}
+
+.card-header.chatrooms-header {
+    color: white;
+    text-align: center;
+}
+
 @media(max-width: 576px){
     .contacts_card{
         margin-bottom: 15px !important;

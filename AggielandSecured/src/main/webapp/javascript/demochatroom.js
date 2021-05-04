@@ -13,6 +13,12 @@ $(document).ready(function(){
         $('.action_menu').toggle();
     });
 
+    $(document).on('keypress',function(e) {
+        if (e.which == 13) {
+            //$('.input-group-append').trigger('click');
+            return;
+        }
+    });
 
 
     $('.input-group-append').click(function(){
@@ -50,11 +56,11 @@ function initWebsocket() {
 
 
     function onOpen(event) {
-        var username = '';
+        var cookies = document.cookie.split(";");
+        var username = cookies[0];
+        console.log(cookies);
 
-        while (username == '') {
-            username = prompt("Please enter your name");
-        }
+
 
         var message = { messageType: 'ENTER', message: username};
         websocket.send(JSON.stringify(message));
@@ -96,12 +102,36 @@ function addNewUser(name) {
 
     $('li').bind('click', function() {
         // remove the active class from all elements with active class
-        $('.active').removeClass('active')
+        $('.active').removeClass('active');
         // add active class to clicked element
         $(this).addClass('active');
+        var me = $(this).children().children()[1];
+        var me2 = me.childNodes[1].innerHTML;
+        console.log(me2);
+        switchContent(me2);
     });
 }
 
+function removeUser(name) {
+    console.log(name);
+    var contacts = $('.contacts .user_info span');
+
+    for(var i = 0; i < contacts.length; i++) {
+        var user = contacts[i];
+        if(user.innerHTML.localeCompare(name) == 1) {
+            var icon = user.parentElement.parentElement.firstChild.childNodes[2];
+            icon.classList.add("offline")
+
+            console.log(user.parentElement.parentElement.firstChild.childNodes[2]);
+            //user.parentElement.parentElement.parentElement.remove();
+            return;
+        }
+    }
+}
+function switchContent(name) {
+    var s = $('#a').html(name);
+    console.log(s);
+}
 function addMessage(message) {
     var users = $('#users');
     var userLength = users.children().length;
@@ -115,7 +145,9 @@ function addMessage(message) {
             message + '<span class="msg_time">' + today + '</span></div></div>');
         addNewUser(message.substring(0, message.indexOf('-')));
     }
-    if(message.includes('+')){
+    if(message.includes('Left')){
+        console.log(message.substring(0,message.indexOf("Left")).trim());
+        removeUser(message.substring(0,message.indexOf("Left")).trim());
         return;
     }
     /*if (userLength % 2 != 0) {

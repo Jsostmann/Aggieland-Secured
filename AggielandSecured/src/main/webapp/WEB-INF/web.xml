@@ -3,26 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-
-
-    <!--Config Values-->
-    <context-param>
-        <param-name>databaseURL</param-name>
-        <!--FOR RUNNING FROM LOCALHOST-->
-        <!--<param-value>jdbc:mysql://localhost:8002/aggielandsql</param-value>-->
-
-        <!--FOR RUNNING FROM DOCKER-->
-        <param-value>jdbc:mysql://database:3306/aggielandsql</param-value>
-    </context-param>
-    <context-param>
-        <param-name>databaseUsername</param-name>
-        <param-value>root</param-value>
-    </context-param>
-    <context-param>
-        <param-name>databasePassword</param-name>
-        <param-value>root</param-value>
-    </context-param>
-
+    
     <!--Servlets-->
     <servlet>
         <servlet-name>Home</servlet-name>
@@ -58,6 +39,10 @@
     <servlet>
         <servlet-name>UserProfile</servlet-name>
         <servlet-class>com.aggieland.rest.UserProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatRooms</servlet-name>
+        <servlet-class>com.aggieland.rest.ChatRooms</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -98,6 +83,11 @@
     <servlet-mapping>
         <servlet-name>UserProfile</servlet-name>
         <url-pattern>/UserProfile/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ChatRooms</servlet-name>
+        <url-pattern>/chatrooms</url-pattern>
     </servlet-mapping>
 
     <error-page>
